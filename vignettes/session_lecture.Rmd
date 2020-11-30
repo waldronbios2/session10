@@ -1,5 +1,5 @@
 ---
-title: 'Session N: What this lecture is about'
+title: 'Session 10: What this lecture is about'
 author: "Levi Waldron"
 clean: false
 output:
