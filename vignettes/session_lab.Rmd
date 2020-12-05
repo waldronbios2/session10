@@ -20,6 +20,6 @@ always_allow_html: true
 
 **Exercises**
 
-1. Exercise 1
 
-
+* Continue the MLM_R.pdf lab from session 9
+* Fit population average models using several different working correlation structures, and compare the results to each other and to the mixed model

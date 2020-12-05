@@ -2,7 +2,7 @@
 [![Actions Status](https://github.com/waldronbios2/session10/workflows/build/badge.svg)](https://github.com/waldronbios2/templatesession/actions)
 <!-- badges: end -->
 
-# Session N: title
+# Session 10: Repeated Measures and Longitudinal Data Analysis II
 
 ## Lecture
 
