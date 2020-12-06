@@ -1,5 +1,5 @@
 ---
-title: 'Session 10: Repeated Measures and Longitudinal Analysis I'
+title: 'Session 10: Repeated Measures and Longitudinal Analysis II'
 author: "Levi Waldron"
 clean: false
 output:
@@ -285,7 +285,7 @@ ga <- read_csv("gababies.csv") %>%
 
 ## Georgia Birthweights dataset
 
-"Spaghetti" plot:
+Boxplot and "Spaghetti" plot:
 ```{r, echo=FALSE}
 ggplot(ga, aes(x = birthord, group = birthord, y = bweight)) +
   geom_boxplot(notch = FALSE, outlier.shape = NA) +
@@ -331,7 +331,7 @@ summary(gafit1)
 
 \tiny
 ```{r}
-intervals(gafit1, which = "fixed")
+intervals(gafit1, which = "all")
 ```
 \normalsize
 
