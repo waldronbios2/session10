@@ -10,6 +10,7 @@ Imports:
     RColorBrewer,
     lme4,
     nlme,
+    gee,
     tidyverse
 Suggests:
     xtable,

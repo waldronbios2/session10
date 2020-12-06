@@ -3,19 +3,19 @@ title: 'Session 10: Repeated Measures and Longitudinal Analysis I'
 author: "Levi Waldron"
 clean: false
 output:
-  pdf_document:
-    toc: yes
-  html_document:
-    df_print: paged
-    number_sections: yes
-    theme: lumen
-    toc: yes
   beamer_presentation:
     colortheme: dove
     df_print: paged
     fonttheme: structurebold
     slide_level: 2
     theme: Hannover
+  html_document:
+    df_print: paged
+    number_sections: yes
+    theme: lumen
+    toc: yes
+  pdf_document:
+    toc: yes
   slidy_presentation: default
   md_document:
     preserve_yaml: false
@@ -27,19 +27,26 @@ institute: CUNY SPH Biostatistics 2
 
 ## Learning objectives
 
-1. define mixed effects models and population average models
-2. perform model diagnostics for random effects models
-3. interpret random intercepts and random slopes
+1. Define mixed effects models and population average models
+2. Perform model diagnostics for random effects models
+3. Interpret random intercepts and random slopes
+4. Define and perform population average models
+5. Define assumptions on correlation structure in hierarchical models
+5. Choose between hierarchical modeling strategies
 
 ## Outline
 
-1. topic 1
+1. Review of fecal fat dataset
+2. Summary of non-hierarchical approaches
+2. Mixed effects models
+3. Longitudinal data and the Georgia Birthweights dataset
+4. Population average models and Generalized Estimating Equations (GEE)
 
 * Vittinghoff sections 7.2, 7.3, 7.5
 
 # Review
 
-## Recall the simple repeated measures example: fecal fat
+## Fecal fat dataset
 
 * Lack of digestive enzymes in the intestine can cause bowel absorption problems.
      - This will be indicated by excess fat in the feces. 
@@ -48,34 +55,62 @@ institute: CUNY SPH Biostatistics 2
      
 ![Fecal Fat dataset](VittinghoffTable71.png)
 
-```{r readdata, echo=FALSE}
-fecfat <- read.csv("fecfat.csv")
-fecfat$pilltype <- factor(fecfat$pilltype, levels=c("none", "tablet", "capsule", "coated"))
-fecfat$subject <- factor(fecfat$subject)
+```{r readdata, echo=FALSE, message=FALSE}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(ggplot2)
+  library(gridExtra)
+})
+dat <- read.csv("fecfat.csv") %>%
+  mutate(pilltype = factor(pilltype, levels = c("none", "tablet", "capsule", "coated"))) %>%
+  mutate(subject = factor(subject))
 ```
 
 ## Fecal fat dataset
 
-```{r, echo=FALSE, fig.height=6, warning=FALSE}
-fecfat$fecfatminusmean <- residuals(lm(fecfat ~ subject, data=fecfat))
-par(mfrow=c(1,2), cex=1.35)
-library(RColorBrewer)
-# colors from display.brewer.all(n=3)
-mycols <- c("white", brewer.pal(n=3, "Pastel2"))
-boxplot(fecfat ~ pilltype, data=fecfat,
-        notch=TRUE,
-        col=mycols, 
-        xlab="Treatment", ylab="Fecal Fat (mg/day)")
-stripchart(fecfat ~ pilltype, data=fecfat, vertical=TRUE, pch=20,
-           method="jitter", jitter=0.1, add=TRUE)
-interaction.plot(x.factor=fecfat$pilltype, 
-                 trace.factor=fecfat$subject, 
-                 response=fecfat$fecfat, 
-                 xlab="Treatment", ylab="Fecal Fat (mg/day)",
-                 legend=FALSE)
+```{r boxplot, echo=FALSE}
+p1 <- ggplot(dat, aes(pilltype, fecfat)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2, aes(size = 1.5), alpha = 0.5) +
+  theme_grey(base_size = 22) +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(
+    angle = 45,
+    vjust = 1,
+    hjust = 1
+  )) +
+  xlab("Treatment") + ylab("Fecal Fat (mg/day)")
+p2 <-
+  ggplot(dat, aes(
+    x = pilltype,
+    y = fecfat,
+    group = subject,
+    lty = subject
+  )) +
+  geom_line(size = 1) +
+  theme_grey(base_size = 22) +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(
+    angle = 45,
+    vjust = 1,
+    hjust = 1
+  )) +
+  xlab("Treatment") + ylab("Fecal Fat (mg/day)")
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
 ```
 
 ## Analysis strategies for hierarchical data
+
+* Fixed effects and other non-hierarchical strategies
+* Random / mixed effects models
+    - model certain regression coefficients (intercept, slopes) as random variables
+* Population average models
+    - using Generalized Estimating Equations (GEE)
+
+# Non-hierarchical analysis strategies 
+
+## Non-hierarchical analysis strategies for hierarchical data
 
 * Analyses for each subgroup
     - e.g., look at each patient independently
@@ -85,47 +120,21 @@ interaction.plot(x.factor=fecfat$pilltype,
 * Analysis at the highest level in the hierarchy
     - first summarize data to highest level
     - doesn't work at all in this example
-    - could sort of work for an example with many patients per doctor, a few doctors
+    - could sort of work for an example with few patients per doctor, many doctors
 
 * Analysis on "Derived Variables"
     - consider each treatment type separately, take differences in fat levels between treatment/control for each patient and use paired t-tests
-    - can work, but not work for unbalanced groups (e.g. incomplete data for some participants)
+    - can work, but not for unbalanced groups
 
-## Better analysis strategies for hierarchical data
+* Fixed-effects models
 
-* Fixed effects models
-* Random / mixed effects models
-    - model certain regression coefficients (intercept, slopes) as random variables
-* Population average models
-    - using Generalized Estimating Equations (GEE)
 
-## When is hierarchical analysis needed?
+## When is hierarchical analysis definitely needed?
 
-* Hierarchical analysis strategies are needed:
-     1. when the correlation structure is of primary interest, _e.g._ familial aggregation of disease, or consistency of treatment within centers,
-     2. when we wish to “borrow strength” across the levels of a hierarchy in order to improve estimates, and
-     3. when dealing with unbalanced, correlated data.
-
-# Fixed effects: two-way analysis of variance
-
-*# Two-way ANOVA (person $i$ with pill type $j$):
-$$
-FECFAT_{ij} = \beta_0 + \beta_{subject i} SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij}
-$$
-Assumption: $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma_\epsilon^2)$
-
-\footnotesize
-
-```{r, results='asis', echo=FALSE, message=FALSE}
-library(xtable)
-fit2 <- lm(fecfat ~ subject + pilltype, data=fecfat)
-print(xtable(anova(fit2), caption="Two-way analysis of variance table.  Equivalent to subtracting the mean fecal fat content for each individual."), comment=FALSE)
-```
-
-\normalsize
-* Accounts for individual differences in mean fecal fat
-* Fits a coefficient for mean fecal fat per indivudual
-
+1. the correlation structure is of interest, _e.g._ familial aggregation of disease, or consistency of treatment within centers
+2. we wish to “borrow strength” across the levels of a hierarchy in order to improve estimates
+3. dealing with unbalanced data
+4. we want to benefit from software designed for hierarchical data
 
 # Mixed effects models
 
@@ -152,7 +161,7 @@ Where we assume: $SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)$
 
 ```{r, echo=FALSE}
 ##Shortcut for calculating ICC from an lme object:
-ICClme <- function(out){
+ICClme <- function(out) {
   varests <- as.numeric(VarCorr(out)[1:2])
   varests[1] / sum(varests)
 }
@@ -161,7 +170,9 @@ ICClme <- function(out){
 \tiny
 ```{r, message=FALSE, echo=FALSE}
 library(nlme)
-fitmix <- nlme::lme(fecfat ~ pilltype, data=fecfat, random=~1|subject)
+fitmix <- nlme::lme(fecfat ~ pilltype, 
+                    data = dat, 
+                    random =  ~ 1 | subject)
 fitmix
 ```
 
@@ -187,17 +198,17 @@ $$
 
 A plot of the random intercept:
 ```{r, echo=FALSE}
-par(cex=2)
-plot(ranef(fitmix), cex=2)
+par(cex = 2)
+plot(ranef(fitmix), cex = 2)
 ```
 
 ## Mixed effects model diagnostics
 
 ```{r, echo=FALSE}
-par(mfrow=c(1,2), cex=1.5)
-qqnorm(residuals(fitmix, type="pearson"), main="QQ plot residuals")
-qqline(residuals(fitmix, type="pearson"))
-qqnorm(ranef(fitmix)[, 1], main="QQ plot random intercepts")
+par(mfrow = c(1, 2), cex = 1.5)
+qqnorm(residuals(fitmix, type = "pearson"), main = "QQ plot residuals")
+qqline(residuals(fitmix, type = "pearson"))
+qqnorm(ranef(fitmix)[, 1], main = "QQ plot random intercepts")
 qqline(ranef(fitmix)[, 1])
 ```
 
@@ -230,13 +241,15 @@ intervals(fitmix)
 
 ## Longitudinal data
 
-* Interested in the change in the value of a variable within a “subject” 
+* Interested in the change in the value of a variable within a "subject"
 * Collect data repeatedly through time. 
 * For hierarchical longitudinal analysis to be effective, before/after measurements need to be positively correlated
 
 ```{r, message=FALSE, echo=FALSE}
 library(nlme)
-fitmix <- nlme::lme(fecfat ~ pilltype, data=fecfat, random=~1|subject)
+fitmix <- nlme::lme(fecfat ~ pilltype, 
+                    data = dat, 
+                    random =  ~ 1 | subject)
 ```
 
 ## Longitudinal data
@@ -263,23 +276,29 @@ fitmix <- nlme::lme(fecfat ~ pilltype, data=fecfat, random=~1|subject)
      - whether this difference depends on the _mother's age at first childbirth_ or on the _weight of initial baby_.
 
 ```{r, echo=FALSE}
-ga <- read.csv("gababies.csv")
-ga$momage[ga$momage==99] <- NA
-ga$agebin <- cut(ga$initage, breaks=c(0, 20, 100))
-##ga <- ga[ga$birthord %in% c(1, 5), ]
-ga$momid=factor(ga$momid)
-ga$lowbrth=factor(ga$lowbrth, levels=0:1, labels=c("normal", "low"))
+ga <- read_csv("gababies.csv") %>%
+  mutate(momage = na_if(momage, 99)) %>%
+  mutate(agebin = cut(initage, breaks = c(0, 20, 100))) %>%
+  mutate(momid = factor(momid)) %>%
+  mutate(lowbrth = recode_factor(lowbrth, `0` = "normal", `1` = "low"))
 ```
 
 ## Georgia Birthweights dataset
 
 "Spaghetti" plot:
 ```{r, echo=FALSE}
-interaction.plot(x.factor=ga$birthord, 
-                 trace.factor=ga$momid, 
-                 response=ga$bweight, 
-                 xlab="Birth Order", ylab="Birth Weight (g)",
-                 legend=FALSE)
+ggplot(ga, aes(x = birthord, group = birthord, y = bweight)) +
+  geom_boxplot(notch = FALSE, outlier.shape = NA) +
+  geom_jitter(width=0.2, col = "black", alpha = 0.25) +
+  theme_grey(base_size = 22) + 
+  labs(subtitle = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth Weight (g)")
+p2 <- ggplot(ga, aes(x = birthord, y = bweight, group = momid)) +
+  geom_line() +
+  theme_grey(base_size = 22) + 
+  theme(legend.position = "none") +
+  labs(subtitle = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth Weight (g)")
 ```
 
 ## Georgia Birthweights dataset
@@ -354,28 +373,30 @@ $$
 
 \tiny
 ```{r, message=FALSE, results="hide"}
-gafit.gee <- gee::gee(bweight ~ birthord, corstr="exchangeable",
-                      id=momid, data=ga)
+gafit.gee <- gee::gee(bweight ~ birthord,
+                      corstr = "exchangeable",
+                      id = momid,
+                      data = ga)
 ```
 ```{r}
 summary(gafit.gee)
 ```
 
 
-## GEE working correlation types
+## Correlation assumptions for GEE
 
-* Must make some assumption about form correlation among observations from the same subject, same hospital, etc
+* Must make some assumption about the form of correlation among grouped observations
 
 * Independence
     - no correlation between measurements within group
 * Exchangeable
-    - all correlations (except those variables with themselves) are a common value
-    - nothing to distinguish one member of a cluster from another
+    - all pairwise correlations are the same (in large-N limit)
+    - nothing distinguishes one member of a cluster from another
     - appropriate in the absence of other data structures such as measurements taken through time or space
 * Auto-regressive
     - observations taken more closely in time are more highly correlated
 
-## GEE working correlation types
+## Correlation assumptions for GEE (cont'd)
 
 * Unstructured
     - estimates a separate correlation between observations taken on each pair of "times"
@@ -390,7 +411,7 @@ summary(gafit.gee)
 
 ## Help in choosing a method
 
-![decision table](journal.pone.0146721.t002.PNG)
+![Hierarchical modeling decision table from Moen _et al._](journal.pone.0146721.t002.PNG)
 
 ## Conclusions
 
