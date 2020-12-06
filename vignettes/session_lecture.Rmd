@@ -331,7 +331,7 @@ summary(gafit1)
 
 \tiny
 ```{r}
-intervals(gafit1)
+intervals(gafit1, which = "fixed")
 ```
 \normalsize
 
