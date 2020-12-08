@@ -27,10 +27,24 @@
 
 ## Lab
 
-**Learning Objectives**
+**Learning objectives**
 
-1. Learning objective 1
+1. Gain an intuitive understanding of ICC through simulated data
+2. Simulate correlated grouped data
+3. Use a heatmap and spaghetti plot to visualize correlated grouped data
+4. Fit random and mixed-effects models to correlated grouped data
+5. Calculate ICC from a random or mixed-effects model
+6. Fit a population average model, aka marginal model, using GEE
 
 **Exercises**
 
-1. Exercise 1
+1. Simulation of correlated grouped data
+2. Create a heatmap of simulated data to visualize the group effect
+3. Create a spaghetti plot of the simulated data to visualize the group effect
+4. Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?
+5. Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?
+6. Estimate ICC simply by calculating the correlation between fecfat1 and fecfat2. Is it similar to the estimate above?
+7. Load and do basic cleaning of the Georgia Birthweights dataset.
+8. Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
+9. Test null hypotheses that baseline birth weights and effect of birth order do not vary by mother
+10. Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight and effect of birth order
