@@ -88,7 +88,8 @@ ggplot(ga, aes(x = birthord, y = bweight, group = momid)) +
 # Test  null hypotheses that baseline birth weights and effect of birth order do not vary by mother
 
 ```{r}
-gafit1 <- nlme::lme(bweight ~ birthord, data=ga, 
+library(nlme)
+gafit1 <- lme(bweight ~ birthord, data=ga, 
     random=~birthord|momid,
     na.action=na.omit,
     control=list(msMaxIter=600, msMaxEval=600, sing.tol=1e-20))
@@ -101,7 +102,7 @@ intervals(gafit1)
 # Test  the null hypotheses that the mother's age (at first birth) is unrelated to baseline mean birth weight and effect of birth order
 
 ```{r}
-gafit2 <- nlme::lme(bweight ~ birthord*agebin, data=ga, 
+gafit2 <- lme(bweight ~ birthord*agebin, data=ga, 
     random=~1|momid)
 summary(gafit2)
 intervals(gafit2)
