@@ -157,6 +157,19 @@ Where we assume: $SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)$
     - the "true" intercept varies randomly from patient to patient
     - the "true" (population) coefficient of treatment is fixed (the same for everyone)
 
+## Fit this mixed-effects model
+
+```{r, message=FALSE}
+library(nlme)
+fitmix <- nlme::lme(fecfat ~ pilltype, 
+                    data = dat, 
+                    random =  ~ 1 | subject)
+```
+
+\tiny 
+
+Note: the `lme4` package is another popular alternative
+
 ## Mixed effects model coeffients, variances, ICC
 
 ```{r, echo=FALSE}
@@ -169,10 +182,6 @@ ICClme <- function(out) {
 
 \tiny
 ```{r, message=FALSE, echo=FALSE}
-library(nlme)
-fitmix <- nlme::lme(fecfat ~ pilltype, 
-                    data = dat, 
-                    random =  ~ 1 | subject)
 fitmix
 ```
 
@@ -203,7 +212,7 @@ plot(ranef(fitmix), cex = 2)
 ```
 
 ## Mixed effects model diagnostics
-
+``
 ```{r, echo=FALSE}
 par(mfrow = c(1, 2), cex = 1.5)
 qqnorm(residuals(fitmix, type = "pearson"), main = "QQ plot residuals")
@@ -275,7 +284,7 @@ fitmix <- nlme::lme(fecfat ~ pilltype,
      - interested in whether birthweight of babies changes with order
      - whether this difference depends on the _mother's age at first childbirth_ or on the _weight of initial baby_.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 ga <- read_csv("gababies.csv") %>%
   mutate(momage = na_if(momage, 99)) %>%
   mutate(agebin = cut(initage, breaks = c(0, 20, 100))) %>%
