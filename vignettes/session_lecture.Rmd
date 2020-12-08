@@ -344,8 +344,9 @@ intervals(gafit1, which = "all")
 ```
 \normalsize
 
-* Do birth weights or the effect of birth order vary by mother?
-    - yes: both standard deviations are non-zero
+* Does baseline birth weight vary by mother?
+    - yes: the subject variance is significantly greater than zero
+    - The variance between mothers is too much to be explained by within-mother variation in birth weights
 
 # Population Average Models
 
