@@ -12,6 +12,7 @@ Imports:
     nlme,
     gee,
     gridExtra,
+    pheatmap,
     tidyverse
 Suggests:
     xtable,

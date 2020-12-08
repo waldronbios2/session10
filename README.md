@@ -46,5 +46,5 @@
 6. Estimate ICC simply by calculating the correlation between fecfat1 and fecfat2. Is it similar to the estimate above?
 7. Load and do basic cleaning of the Georgia Birthweights dataset.
 8. Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
-9. Test null hypotheses that baseline birth weights and effect of birth order do not vary by mother
-10. Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight and effect of birth order
+9. Test the null hypotheses that baseline birth weights do not vary by mother
+10. Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight
