@@ -78,7 +78,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Session 10: Repeated Measures and Longitudinal Analysis I},
+  pdftitle={Session 10: Repeated Measures and Longitudinal Analysis II},
   pdfauthor={Levi Waldron},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -142,7 +142,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
-\title{Session 10: Repeated Measures and Longitudinal Analysis I}
+\title{Session 10: Repeated Measures and Longitudinal Analysis II}
 \author{Levi Waldron}
 \date{}
 \institute{CUNY SPH Biostatistics 2}
@@ -685,7 +685,7 @@ Inference for variance terms (and fixed effects): \tiny
 \begin{frame}{Georgia Birthweights dataset}
 \protect\hypertarget{georgia-birthweights-dataset}{}
 
-``Spaghetti'' plot:
+Boxplot and ``Spaghetti'' plot:
 \includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-9-1.pdf}
 
 \end{frame}
@@ -696,27 +696,24 @@ Inference for variance terms (and fixed effects): \tiny
 \begin{itemize}
 \tightlist
 \item
-  Do birth weights or the effect of birth order vary by mother?
+  Does baseline birth weight vary by mother?
 
   \begin{itemize}
   \tightlist
   \item
-    random intercept, random slope
+    random intercept
   \end{itemize}
 \end{itemize}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gafit1 <-}\StringTok{ }\NormalTok{nlme}\OperatorTok{::}\KeywordTok{lme}\NormalTok{(bweight }\OperatorTok{~}\StringTok{ }\NormalTok{birthord, }\DataTypeTok{data=}\NormalTok{ga, }
-    \DataTypeTok{random=}\OperatorTok{~}\NormalTok{birthord}\OperatorTok{|}\NormalTok{momid,}
-    \DataTypeTok{na.action=}\NormalTok{na.omit,}
-    \DataTypeTok{control=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{msMaxIter=}\DecValTok{600}\NormalTok{, }\DataTypeTok{msMaxEval=}\DecValTok{600}\NormalTok{, }
-                 \DataTypeTok{sing.tol=}\FloatTok{1e-20}\NormalTok{, }\DataTypeTok{msVerbose=}\OtherTok{FALSE}\NormalTok{))  }
+\KeywordTok{library}\NormalTok{(nlme)}
+\NormalTok{gafit1 <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(bweight }\OperatorTok{~}\StringTok{ }\NormalTok{birthord, }\DataTypeTok{data=}\NormalTok{ga, }\DataTypeTok{random=}\OperatorTok{~}\DecValTok{1}\OperatorTok{|}\NormalTok{momid)}
 \end{Highlighting}
 \end{Shaded}
 
-Note: the control argument increases the max \# iterations to allow
-convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
+Note: there are not enough degrees of freedom to also fit a random
+coefficient for birth order
 
 \end{frame}
 
@@ -742,27 +739,24 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 ## Linear mixed-effects model fit by REML
 ##  Data: ga 
 ##        AIC      BIC    logLik
-##   15321.23 15350.67 -7654.616
+##   15321.65 15341.28 -7656.826
 ## 
 ## Random effects:
-##  Formula: ~birthord | momid
-##  Structure: General positive-definite, Log-Cholesky parametrization
-##             StdDev    Corr  
-## (Intercept) 296.40072 (Intr)
-## birthord     23.87215 0.993 
-## Residual    443.43168       
+##  Formula: ~1 | momid
+##         (Intercept) Residual
+## StdDev:    367.2676 445.0228
 ## 
 ## Fixed effects: bweight ~ birthord 
 ##                Value Std.Error  DF  t-value p-value
-## (Intercept) 2995.640  38.99668 799 76.81782       0
-## birthord      46.608  10.05809 799  4.63388       0
+## (Intercept) 2995.640  41.99615 799 71.33130       0
+## birthord      46.608   9.95101 799  4.68374       0
 ##  Correlation: 
 ##          (Intr)
-## birthord -0.662
+## birthord -0.711
 ## 
 ## Standardized Within-Group Residuals:
 ##         Min          Q1         Med          Q3         Max 
-## -5.32827381 -0.42194068  0.04103172  0.53116958  3.25527629 
+## -5.26801358 -0.43683345  0.05028638  0.52703429  3.30770805 
 ## 
 ## Number of Observations: 1000
 ## Number of Groups: 200
@@ -777,7 +771,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{intervals}\NormalTok{(gafit1, }\DataTypeTok{which =} \StringTok{"fixed"}\NormalTok{)}
+\KeywordTok{intervals}\NormalTok{(gafit1, }\DataTypeTok{which =} \StringTok{"all"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -786,10 +780,19 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 ## 
 ##  Fixed effects:
 ##                  lower     est.      upper
-## (Intercept) 2919.09196 2995.640 3072.18804
-## birthord      26.86459   46.608   66.35141
+## (Intercept) 2913.20418 2995.640 3078.07582
+## birthord      27.07478   46.608   66.14122
 ## attr(,"label")
 ## [1] "Fixed effects:"
+## 
+##  Random Effects:
+##   Level: momid 
+##                    lower     est.    upper
+## sd((Intercept)) 323.1724 367.2676 417.3794
+## 
+##  Within-group standard error:
+##    lower     est.    upper 
+## 423.7298 445.0228 467.3859
 \end{verbatim}
 
 \normalsize
@@ -834,7 +837,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
   \begin{itemize}
   \tightlist
   \item
-    Requires a fair bit more clusters than observations per cluster
+    Requires more clusters than observations per cluster
   \end{itemize}
 \item
   Estimates regression coefficients and robust standard errors
@@ -872,8 +875,6 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 \begin{frame}[fragile]{Fit a population average model}
 \protect\hypertarget{fit-a-population-average-model}{}
 
-\tiny
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{gafit.gee <-}\StringTok{ }\NormalTok{gee}\OperatorTok{::}\KeywordTok{gee}\NormalTok{(bweight }\OperatorTok{~}\StringTok{ }\NormalTok{birthord,}
@@ -882,6 +883,13 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
                       \DataTypeTok{data =}\NormalTok{ ga)}
 \end{Highlighting}
 \end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section}{}
+
+\tiny
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -930,12 +938,13 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 \begin{frame}{Correlation assumptions for GEE}
 \protect\hypertarget{correlation-assumptions-for-gee}{}
 
+Must make some assumption about the form of correlation among grouped
+observations. Some options are:
+
 \begin{itemize}
+\tightlist
 \item
-  Must make some assumption about the form of correlation among grouped
-  observations
-\item
-  Independence
+  Independence:
 
   \begin{itemize}
   \tightlist
@@ -943,7 +952,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
     no correlation between measurements within group
   \end{itemize}
 \item
-  Exchangeable
+  Exchangeable:
 
   \begin{itemize}
   \tightlist
@@ -956,7 +965,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
     measurements taken through time or space
   \end{itemize}
 \item
-  Auto-regressive
+  Auto-regressive:
 
   \begin{itemize}
   \tightlist
@@ -973,7 +982,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
 \begin{itemize}
 \tightlist
 \item
-  Unstructured
+  Unstructured:
 
   \begin{itemize}
   \tightlist
@@ -982,7 +991,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
     pair of ``times''
   \end{itemize}
 \item
-  Non-stationary
+  Non-stationary:
 
   \begin{itemize}
   \tightlist
@@ -991,7 +1000,7 @@ convergence. If \texttt{msVerbose=TRUE}, it produces verbose output.
     separated far enough in time are zero
   \end{itemize}
 \item
-  Stationary
+  Stationary:
 
   \begin{itemize}
   \tightlist
