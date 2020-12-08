@@ -121,7 +121,8 @@
 <li>Load and do basic cleaning of the Georgia Birthweights dataset.</li>
 <li>Make a boxplot and spaghetti plot for the Georgia Birthweights dataset</li>
 <li>Test the null hypotheses that baseline birth weights do not vary by mother</li>
-<li>Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight</li>
+<li>Create QQ plots of residuals and random intercepts for this model.</li>
+<li>Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.</li>
 </ol>
 <div id="simulation-of-correlated-grouped-data" class="section level1">
 <h1 class="hasAnchor">
@@ -181,21 +182,21 @@
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
 <pre><code>## Linear mixed-effects model fit by REML
 ##  Data: df2 
-##       AIC     BIC   logLik
-##   773.562 783.442 -383.781
+##        AIC      BIC    logLik
+##   769.2266 779.1065 -381.6133
 ## 
 ## Random effects:
 ##  Formula: ~1 | id
 ##         (Intercept)  Residual
-## StdDev:    1.861543 0.9672075
+## StdDev:    1.907117 0.9305626
 ## 
 ## Fixed effects: value ~ 1 
-##                Value Std.Error  DF  t-value p-value
-## (Intercept) 9.759054 0.1983202 100 49.20858       0
+##                Value Std.Error  DF t-value p-value
+## (Intercept) 10.12419 0.2017442 100 50.1833       0
 ## 
 ## Standardized Within-Group Residuals:
 ##         Min          Q1         Med          Q3         Max 
-## -2.36092874 -0.48921030 -0.01196222  0.54294137  2.01981835 
+## -1.81940165 -0.47809153  0.01326109  0.51514287  2.00171771 
 ## 
 ## Number of Observations: 200
 ## Number of Groups: 100</code></pre>
@@ -205,18 +206,18 @@
 ## 
 ##  Fixed effects:
 ##                lower     est.    upper
-## (Intercept) 9.365592 9.759054 10.15252
+## (Intercept) 9.723932 10.12419 10.52444
 ## attr(,"label")
 ## [1] "Fixed effects:"
 ## 
 ##  Random Effects:
 ##   Level: id 
 ##                    lower     est.    upper
-## sd((Intercept)) 1.587579 1.861543 2.182784
+## sd((Intercept)) 1.630476 1.907117 2.230696
 ## 
 ##  Within-group standard error:
 ##     lower      est.     upper 
-## 0.8425604 0.9672075 1.1102947</code></pre>
+## 0.8105045 0.9305626 1.0684046</code></pre>
 </div>
 <div id="estimate-icc-from-the-model-above--is-it-what-you-expected-from-the-group-and-residual-variances-you-simulated" class="section level1">
 <h1 class="hasAnchor">
@@ -232,19 +233,19 @@ ICC &amp; = corr(x_{ij}, x_{ik}) \\
 <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
 <pre><code>## id = pdLogChol(1) 
 ##             Variance  StdDev   
-## (Intercept) 3.4653429 1.8615431
-## Residual    0.9354904 0.9672075</code></pre>
+## (Intercept) 3.6370971 1.9071175
+## Residual    0.8659468 0.9305626</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="va">varests</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 <span class="va">varests</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">varests</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 0.7874288</code></pre>
+<pre><code>## [1] 0.8076975</code></pre>
 </div>
 <div id="estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="section level1">
 <h1 class="hasAnchor">
 <a href="#estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="anchor"></a>Estimate ICC simply by calculating the correlation between <code>fecfat1</code> and <code>fecfat2</code>. Is it similar to the estimate above?</h1>
 <div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">fecfat1</span>, <span class="va">fecfat2</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 0.7856696</code></pre>
+<pre><code>## [1] 0.8062836</code></pre>
 </div>
 <div id="load-and-do-basic-cleaning-of-the-georgia-birthweights-dataset-" class="section level1">
 <h1 class="hasAnchor">
@@ -319,10 +320,31 @@ Spaghetti plot of Georgia Birthweights dataset
 ##    lower     est.    upper 
 ## 423.7298 445.0228 467.3859</code></pre>
 </div>
-<div id="test-the-null-hypotheses-that-the-mothers-age-at-first-birth-is-unrelated-to-baseline-mean-birth-weight" class="section level1">
+<div id="create-qq-plots-of-residuals-and-random-intercepts-for-this-model-" class="section level1">
 <h1 class="hasAnchor">
-<a href="#test-the-null-hypotheses-that-the-mothers-age-at-first-birth-is-unrelated-to-baseline-mean-birth-weight" class="anchor"></a>Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight</h1>
+<a href="#create-qq-plots-of-residuals-and-random-intercepts-for-this-model-" class="anchor"></a>Create QQ plots of residuals and random intercepts for this model.</h1>
 <div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">gafit1</span>, type <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"QQ plot residuals"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqline</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">gafit1</span>, type <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<div class="sourceCode" id="cb29"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/random.effects.html">ranef</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span><span class="op">)</span></pre></div>
+<pre><code>##    (Intercept)
+## 39    156.5617
+## 62   -556.7690
+## 79   -349.9124
+## 80    385.6810
+## 84    157.9531
+## 92   -486.5800</code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/random.effects.html">ranef</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"QQ plot random intercepts"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqline</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/random.effects.html">ranef</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+</div>
+<div id="test-the-null-hypotheses-that-the-effect-of-birth-order-not-modified-by-mothers-age-at-first-birth-or-weight-of-first-infant-" class="section level1">
+<h1 class="hasAnchor">
+<a href="#test-the-null-hypotheses-that-the-effect-of-birth-order-not-modified-by-mothers-age-at-first-birth-or-weight-of-first-infant-" class="anchor"></a>Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.</h1>
+<div class="sourceCode" id="cb32"><pre class="downlit">
 <span class="va">gafit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span><span class="op">*</span><span class="va">agebin</span>, data<span class="op">=</span><span class="va">ga</span>, 
     random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
@@ -354,7 +376,7 @@ Spaghetti plot of Georgia Birthweights dataset
 ## 
 ## Number of Observations: 1000
 ## Number of Groups: 200</code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit">
+<div class="sourceCode" id="cb34"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
 <pre><code>## Approximate 95% confidence intervals
 ## 
@@ -375,6 +397,59 @@ Spaghetti plot of Georgia Birthweights dataset
 ##  Within-group standard error:
 ##    lower     est.    upper 
 ## 423.6907 444.9955 467.3716</code></pre>
+<div class="sourceCode" id="cb36"><pre class="downlit">
+<span class="va">gafit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span><span class="op">*</span><span class="va">initwght</span>, data<span class="op">=</span><span class="va">ga</span>, 
+    random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
+<pre><code>## Linear mixed-effects model fit by REML
+##  Data: ga 
+##        AIC     BIC    logLik
+##   15198.28 15227.7 -7593.138
+## 
+## Random effects:
+##  Formula: ~1 | momid
+##         (Intercept) Residual
+## StdDev:     274.526  431.555
+## 
+## Fixed effects: bweight ~ birthord * initwght 
+##                      Value Std.Error  DF   t-value p-value
+## (Intercept)       600.3298 199.59828 798  3.007690  0.0027
+## birthord          409.8405  51.45612 798  7.964855  0.0000
+## initwght            0.7941   0.06499 198 12.217420  0.0000
+## birthord:initwght  -0.1204   0.01676 798 -7.186579  0.0000
+##  Correlation: 
+##                   (Intr) brthrd intwgh
+## birthord          -0.773              
+## initwght          -0.982  0.760       
+## birthord:initwght  0.760 -0.982 -0.773
+## 
+## Standardized Within-Group Residuals:
+##          Min           Q1          Med           Q3          Max 
+## -5.329582374 -0.455327000  0.007433181  0.531084518  4.791970708 
+## 
+## Number of Observations: 1000
+## Number of Groups: 200</code></pre>
+<div class="sourceCode" id="cb38"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
+<pre><code>## Approximate 95% confidence intervals
+## 
+##  Fixed effects:
+##                         lower        est.        upper
+## (Intercept)       208.5301437 600.3298240 992.12950431
+## birthord          308.8351941 409.8405317 510.84586930
+## initwght            0.6658862   0.7940549   0.92222351
+## birthord:initwght  -0.1533026  -0.1204130  -0.08752343
+## attr(,"label")
+## [1] "Fixed effects:"
+## 
+##  Random Effects:
+##   Level: momid 
+##                    lower    est.    upper
+## sd((Intercept)) 236.4865 274.526 318.6842
+## 
+##  Within-group standard error:
+##    lower     est.    upper 
+## 410.8937 431.5550 453.2552</code></pre>
 </div>
   </div>
 
