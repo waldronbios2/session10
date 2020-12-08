@@ -1,5 +1,5 @@
 ---
-title: "Session 10 lab exercise: What it's about"
+title: "Session 10 lab exercise: Repeated Measures and Longitudinal Analysis II"
 author: "Levi Waldron"
 institute: "CUNY SPH Biostatistics 2"
 clean: false
@@ -16,10 +16,93 @@ always_allow_html: true
 
 **Learning objectives**
 
-1. Learning objective 1
+1. Gain an intuitive understanding of ICC through simulated data
+2. Simulate correlated grouped data
+3. Use a heatmap and spaghetti plot to visualize correlated grouped data
+4. Fit random and mixed-effects models to correlated grouped data
+5. Calculate ICC from a random or mixed-effects model
+6. Fit a population average model, aka marginal model, using GEE
+
 
 **Exercises**
 
+# Simulation of correlated grouped data
 
-* Continue the MLM_R.pdf lab from session 9
-* Fit population average models using several different working correlation structures, and compare the results to each other and to the mixed model
+Simulate a dataset with two fecal fat measurements on each of `n` study subjects, where the measurement is the sum of a subject mean plus random measurement error. Subject means are distributed $N(10, \sigma_{subj})$ and measurement errors are distributed $N(0, \sigma_{resid})$. Start with the following values:
+```{r}
+sigma_subj <- sqrt(3)
+sigma_resid <- 1
+n <- 100
+```
+
+# Create a heatmap of simulated data to visualize the group effect
+
+Also play with the values of `sigma_subj` and `sigma_resid` to see what effect this has on the heatmap.
+
+# Create a spaghetti plot of the simulated data to visualize the group effect
+
+Also play with the values of `sigma_subj` and `sigma_resid` to see what effect this has on the spaghetti plot
+
+# Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?
+
+# Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?
+
+# Estimate ICC simply by calculating the correlation between `fecfat1` and `fecfat2`. Is it similar to the estimate above?
+
+# Load and do basic cleaning of the Georgia Birthweights dataset. 
+
+a. Fix NA values for `momage`
+b. Create a categorical age variable with cut at age <18 vs >=18
+c. Convert `momid` to a factor
+d. Recode the low birthweight variable to a factor, with "0" to "normal" as the reference group and "1" to "low".
+
+```{r, message=FALSE}
+library(tidyverse)
+ga <- read_csv("gababies.csv") %>%
+  mutate(momage = na_if(momage, 99)) %>%
+  mutate(agebin = cut(initage, breaks = c(0, 17, 100))) %>%
+  mutate(momid = factor(momid)) %>%
+  mutate(lowbrth = recode_factor(lowbrth, `0` = "normal", `1` = "low"))
+```
+
+# Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
+
+```{r boxplot, fig.cap="Boxplot of Georgia Birthweights dataset"}
+ggplot(ga, aes(x = birthord, group = birthord, y = bweight)) +
+  geom_boxplot(notch = FALSE, outlier.shape = NA) +
+  geom_jitter(width=0.2, col = "black", alpha = 0.25) +
+  theme_grey(base_size = 16) + 
+  labs(subtitle = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth Weight (g)")
+```
+
+```{r spaghetti, fig.cap="Spaghetti plot of Georgia Birthweights dataset"}
+ggplot(ga, aes(x = birthord, y = bweight, group = momid)) +
+  geom_line(alpha=0.5) +
+  theme_grey(base_size = 16) + 
+  theme(legend.position = "none") +
+  labs(subtitle = "Georgia birthweight dataset") +
+  xlab("Birth order") + ylab("Birth Weight (g)")
+```
+
+# Test  null hypotheses that baseline birth weights and effect of birth order do not vary by mother
+
+```{r}
+gafit1 <- nlme::lme(bweight ~ birthord, data=ga, 
+    random=~birthord|momid,
+    na.action=na.omit,
+    control=list(msMaxIter=600, msMaxEval=600, sing.tol=1e-20))
+```
+
+```{r}
+intervals(gafit1)
+```
+
+# Test  the null hypotheses that the mother's age (at first birth) is unrelated to baseline mean birth weight and effect of birth order
+
+```{r}
+gafit2 <- nlme::lme(bweight ~ birthord*agebin, data=ga, 
+    random=~1|momid)
+summary(gafit2)
+intervals(gafit2)
+```

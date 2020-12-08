@@ -394,16 +394,16 @@ Must make some assumption about the form of correlation among grouped observatio
     - all pairwise correlations are the same (in large-N limit)
     - nothing distinguishes one member of a cluster from another
     - appropriate in the absence of other data structures such as measurements taken through time or space
-* Auto-regressive:
+* Auto-regressive (_AR-M_):
     - observations taken more closely in time are more highly correlated
 
 ## Correlation assumptions for GEE (cont'd)
 
 * Unstructured:
     - estimates a separate correlation between observations taken on each pair of "times"
-* Non-stationary:
+* Non-stationary ("non_stat_M_dep"):
     - similar to unstructured, but assumes all correlations for pairs separated far enough in time are zero
-* Stationary:
+* Stationary ("stat_M_dep"):
     - e.g. stationary of order 2: observations taken at time points 1 and 3 have the same correlation as time points 2 and 4
     - but this might be different from the correlation between observations taken at times 2 and 3
     - correlations for observations 3 or more time periods apart assumed to be zero
@@ -423,3 +423,18 @@ Must make some assumption about the form of correlation among grouped observatio
      3. When dealing with unbalanced correlated data.  E.g., no requirement that each Georgia mother have exactly 5 children.
 * Population average models provide a robust alternative to mixed models
     - for one level of hierarchy
+
+## A final note on reporting results of hypothesis tests
+
+* Include test statistic, a measure of "effect size", and test name if unclear from test statistic
+* Write in plain language and let the statistics support, not lead. E.g.:
+    + _do_: The 36 study participants had a mean age of 27.4 (SD = 12.6), significantly older than the university mean of 21.2 years (t(35) = 2.95, p = 0.01).
+    + _don't_: A p-value of 0.01 indicated significant difference in age of study participants compared to all university students.
+    + _do_: report confidence intervals where possible
+
+\tiny
+* [UW "Reporting Results of Common Statistical Tests in APA Format"](https://psych.uw.edu/storage/writing_center/stats.pdf): specific examples of reporting a hypothesis test result
+* STROBE guidelines for reporting observational studies: https://www.strobe-statement.org/
+* [A Guideline for Reporting Results of Statistical Analysis in Japanese Journal of Clinical Oncology](https://academic.oup.com/DocumentLibrary/JJCO/eng.guideline.pdf): helpful guidelines for all parts of a manuscript
+
+## CONGRATULATIONS!!!
