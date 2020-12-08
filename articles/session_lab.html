@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session 10 lab exercise: What it's about • session10</title>
+<title>Session 10 lab exercise: Repeated Measures and Longitudinal Analysis II • session10</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Session 10 lab exercise: What it's about">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Session 10 lab exercise: Repeated Measures and Longitudinal Analysis II">
 <meta property="og:description" content="session10">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -90,7 +90,7 @@
       </header><script src="session_lab_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Session 10 lab exercise: What it’s about</h1>
+      <h1 data-toc-skip>Session 10 lab exercise: Repeated Measures and Longitudinal Analysis II</h1>
                         <h4 class="author">Levi Waldron</h4>
             
       
@@ -103,18 +103,286 @@
     
 <p><strong>Learning objectives</strong></p>
 <ol style="list-style-type: decimal">
-<li>Learning objective 1</li>
+<li>Gain an intuitive understanding of ICC through simulated data</li>
+<li>Simulate correlated grouped data</li>
+<li>Use a heatmap and spaghetti plot to visualize correlated grouped data</li>
+<li>Fit random and mixed-effects models to correlated grouped data</li>
+<li>Calculate ICC from a random or mixed-effects model</li>
+<li>Fit a population average model, aka marginal model, using GEE</li>
 </ol>
 <p><strong>Exercises</strong></p>
-<ul>
-<li>Continue the MLM_R.pdf lab from session 9</li>
-<li>Fit population average models using several different working correlation structures, and compare the results to each other and to the mixed model</li>
-</ul>
+<ol style="list-style-type: decimal">
+<li>Simulation of correlated grouped data</li>
+<li>Create a heatmap of simulated data to visualize the group effect</li>
+<li>Create a spaghetti plot of the simulated data to visualize the group effect</li>
+<li>Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?</li>
+<li>Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?</li>
+<li>Estimate ICC simply by calculating the correlation between fecfat1 and fecfat2. Is it similar to the estimate above?</li>
+<li>Load and do basic cleaning of the Georgia Birthweights dataset.</li>
+<li>Make a boxplot and spaghetti plot for the Georgia Birthweights dataset</li>
+<li>Test the null hypotheses that baseline birth weights do not vary by mother</li>
+<li>Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight</li>
+</ol>
+<div id="simulation-of-correlated-grouped-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#simulation-of-correlated-grouped-data" class="anchor"></a>Simulation of correlated grouped data</h1>
+<p>Simulate a dataset with two fecal fat measurements on each of <code>n</code> study subjects, where the measurement is the sum of a subject mean plus random measurement error. Subject means are distributed <span class="math inline">\(N(10, \sigma_{subj})\)</span> and measurement errors are distributed <span class="math inline">\(N(0, \sigma_{resid})\)</span>. Start with the following values:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="va">sigma_subj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">sigma_resid</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.2     ✔ purrr   0.3.4
+## ✔ tibble  3.0.4     ✔ dplyr   1.0.2
+## ✔ tidyr   1.1.2     ✔ stringr 1.4.0
+## ✔ readr   1.4.0     ✔ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>subj_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span>, mean <span class="op">=</span> <span class="fl">10</span>, sd <span class="op">=</span> <span class="va">sigma_subj</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>fecfat1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="va">sigma_resid</span><span class="op">)</span> <span class="op">+</span> <span class="va">subj_mean</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>fecfat2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="va">sigma_resid</span><span class="op">)</span> <span class="op">+</span> <span class="va">subj_mean</span><span class="op">)</span></pre></div>
 </div>
+<div id="create-a-heatmap-of-simulated-data-to-visualize-the-group-effect" class="section level1">
+<h1 class="hasAnchor">
+<a href="#create-a-heatmap-of-simulated-data-to-visualize-the-group-effect" class="anchor"></a>Create a heatmap of simulated data to visualize the group effect</h1>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="fu">select</span><span class="op">(</span><span class="va">df</span>, <span class="va">fecfat1</span><span class="op">:</span><span class="va">fecfat2</span><span class="op">)</span><span class="op">)</span></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>Also play with the values of <code>sigma_subj</code> and <code>sigma_resid</code> to see what effect this has on the heatmap.</p>
+</div>
+<div id="create-a-spaghetti-plot-of-the-simulated-data-to-visualize-the-group-effect" class="section level1">
+<h1 class="hasAnchor">
+<a href="#create-a-spaghetti-plot-of-the-simulated-data-to-visualize-the-group-effect" class="anchor"></a>Create a spaghetti plot of the simulated data to visualize the group effect</h1>
+<p>Also play with the values of <code>sigma_subj</code> and <code>sigma_resid</code> to see what effect this has on the spaghetti plot</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">df</span>, cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"fecfat"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">name</span>, y<span class="op">=</span><span class="va">value</span>, group <span class="op">=</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.25</span><span class="op">)</span></pre></div>
+<p><img src="session_lab_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+</div>
+<div id="fit-a-random-effects-model-with-no-covariates-and-a-random-intercept--does-it-recover-the-group-and-residual-variances-you-simulated" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fit-a-random-effects-model-with-no-covariates-and-a-random-intercept--does-it-recover-the-group-and-residual-variances-you-simulated" class="anchor"></a>Fit a random effects model with no covariates and a random intercept. Does it recover the group and residual variances you simulated?</h1>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span></pre></div>
+<pre><code>## 
+## Attaching package: 'nlme'</code></pre>
+<pre><code>## The following object is masked from 'package:dplyr':
+## 
+##     collapse</code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fl">1</span>, random <span class="op">=</span> <span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">id</span>, data<span class="op">=</span><span class="va">df2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
+<pre><code>## Linear mixed-effects model fit by REML
+##  Data: df2 
+##        AIC      BIC    logLik
+##   728.3162 738.1961 -361.1581
+## 
+## Random effects:
+##  Formula: ~1 | id
+##         (Intercept)  Residual
+## StdDev:    1.472946 0.9440575
+## 
+## Fixed effects: value ~ 1 
+##                Value Std.Error  DF  t-value p-value
+## (Intercept) 9.802525 0.1617156 100 60.61584       0
+## 
+## Standardized Within-Group Residuals:
+##          Min           Q1          Med           Q3          Max 
+## -2.041901203 -0.423536946  0.007016895  0.493807281  2.176449315 
+## 
+## Number of Observations: 200
+## Number of Groups: 100</code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
+<pre><code>## Approximate 95% confidence intervals
+## 
+##  Fixed effects:
+##                lower     est.    upper
+## (Intercept) 9.481686 9.802525 10.12336
+## attr(,"label")
+## [1] "Fixed effects:"
+## 
+##  Random Effects:
+##   Level: id 
+##                    lower     est.    upper
+## sd((Intercept)) 1.242149 1.472946 1.746626
+## 
+##  Within-group standard error:
+##     lower      est.     upper 
+## 0.8213261 0.9440575 1.0851288</code></pre>
+</div>
+<div id="estimate-icc-from-the-model-above--is-it-what-you-expected-from-the-group-and-residual-variances-you-simulated" class="section level1">
+<h1 class="hasAnchor">
+<a href="#estimate-icc-from-the-model-above--is-it-what-you-expected-from-the-group-and-residual-variances-you-simulated" class="anchor"></a>Estimate ICC from the model above. Is it what you expected from the group and residual variances you simulated?</h1>
+<p>Recall ICC for subject <span class="math inline">\(i\)</span>, measurements <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span>: <span class="math display">\[\begin{equation*}
+\begin{aligned}
+ICC &amp; = corr(x_{ij}, x_{ik}) \\
+    &amp; = \frac{\sigma_{subj}^2}{\sigma_{subj}^2 + \sigma_{\epsilon}^2} \\
+    &amp; = \frac{\tau_{00}^2}{\tau_{00}^2 + \sigma_\epsilon^2}
+\end{aligned}
+\end{equation*}\]</span></p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
+<pre><code>## id = pdLogChol(1) 
+##             Variance  StdDev   
+## (Intercept) 2.1695702 1.4729461
+## Residual    0.8912445 0.9440575</code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="va">varests</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
+<span class="va">varests</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">varests</span><span class="op">)</span></pre></div>
+<pre><code>## [1] 0.7088212</code></pre>
+</div>
+<div id="estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="section level1">
+<h1 class="hasAnchor">
+<a href="#estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="anchor"></a>Estimate ICC simply by calculating the correlation between <code>fecfat1</code> and <code>fecfat2</code>. Is it similar to the estimate above?</h1>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">fecfat1</span>, <span class="va">fecfat2</span><span class="op">)</span><span class="op">)</span></pre></div>
+<pre><code>## [1] 0.7098636</code></pre>
+</div>
+<div id="load-and-do-basic-cleaning-of-the-georgia-birthweights-dataset-" class="section level1">
+<h1 class="hasAnchor">
+<a href="#load-and-do-basic-cleaning-of-the-georgia-birthweights-dataset-" class="anchor"></a>Load and do basic cleaning of the Georgia Birthweights dataset.</h1>
+<ol style="list-style-type: lower-alpha">
+<li>Fix NA values for <code>momage</code>
+</li>
+<li>Create a categorical age variable with cut at age &lt;18 vs &gt;=18</li>
+<li>Convert <code>momid</code> to a factor</li>
+<li>Recode the low birthweight variable to a factor, with “0” to “normal” as the reference group and “1” to “low”.</li>
+</ol>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="va">ga</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"gababies.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>momage <span class="op">=</span> <span class="fu">na_if</span><span class="op">(</span><span class="va">momage</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>agebin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">initage</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">17</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>momid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">momid</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>lowbrth <span class="op">=</span> <span class="fu">recode_factor</span><span class="op">(</span><span class="va">lowbrth</span>, `0` <span class="op">=</span> <span class="st">"normal"</span>, `1` <span class="op">=</span> <span class="st">"low"</span><span class="op">)</span><span class="op">)</span></pre></div>
+</div>
+<div id="make-a-boxplot-and-spaghetti-plot-for-the-georgia-birthweights-dataset" class="section level1">
+<h1 class="hasAnchor">
+<a href="#make-a-boxplot-and-spaghetti-plot-for-the-georgia-birthweights-dataset" class="anchor"></a>Make a boxplot and spaghetti plot for the Georgia Birthweights dataset</h1>
+<div class="sourceCode" id="cb23"><pre class="downlit">
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ga</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">birthord</span>, group <span class="op">=</span> <span class="va">birthord</span>, y <span class="op">=</span> <span class="va">bweight</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span>notch <span class="op">=</span> <span class="cn">FALSE</span>, outlier.shape <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>width<span class="op">=</span><span class="fl">0.2</span>, col <span class="op">=</span> <span class="st">"black"</span>, alpha <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_grey</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Georgia birthweight dataset"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Birth order"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Birth Weight (g)"</span><span class="op">)</span></pre></div>
+<div class="figure">
+<img src="session_lab_files/figure-html/boxplot-1.png" alt="Boxplot of Georgia Birthweights dataset" width="700"><p class="caption">
+Boxplot of Georgia Birthweights dataset
+</p>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ga</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">birthord</span>, y <span class="op">=</span> <span class="va">bweight</span>, group <span class="op">=</span> <span class="va">momid</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_grey</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Georgia birthweight dataset"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Birth order"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Birth Weight (g)"</span><span class="op">)</span></pre></div>
+<div class="figure">
+<img src="session_lab_files/figure-html/spaghetti-1.png" alt="Spaghetti plot of Georgia Birthweights dataset" width="700"><p class="caption">
+Spaghetti plot of Georgia Birthweights dataset
+</p>
+</div>
+</div>
+<div id="test-the-null-hypotheses-that-baseline-birth-weights-do-not-vary-by-mother" class="section level1">
+<h1 class="hasAnchor">
+<a href="#test-the-null-hypotheses-that-baseline-birth-weights-do-not-vary-by-mother" class="anchor"></a>Test the null hypotheses that baseline birth weights do not vary by mother</h1>
+<div class="sourceCode" id="cb25"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
+<span class="va">gafit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>, data<span class="op">=</span><span class="va">ga</span>, 
+    random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span></pre></div>
+<pre><code>## Approximate 95% confidence intervals
+## 
+##  Fixed effects:
+##                  lower     est.      upper
+## (Intercept) 2913.20418 2995.640 3078.07582
+## birthord      27.07478   46.608   66.14122
+## attr(,"label")
+## [1] "Fixed effects:"
+## 
+##  Random Effects:
+##   Level: momid 
+##                    lower     est.    upper
+## sd((Intercept)) 323.1724 367.2676 417.3794
+## 
+##  Within-group standard error:
+##    lower     est.    upper 
+## 423.7298 445.0228 467.3859</code></pre>
+</div>
+<div id="test-the-null-hypotheses-that-the-mothers-age-at-first-birth-is-unrelated-to-baseline-mean-birth-weight" class="section level1">
+<h1 class="hasAnchor">
+<a href="#test-the-null-hypotheses-that-the-mothers-age-at-first-birth-is-unrelated-to-baseline-mean-birth-weight" class="anchor"></a>Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight</h1>
+<div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="va">gafit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span><span class="op">*</span><span class="va">agebin</span>, data<span class="op">=</span><span class="va">ga</span>, 
+    random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
+<pre><code>## Linear mixed-effects model fit by REML
+##  Data: ga 
+##        AIC      BIC    logLik
+##   15303.27 15332.69 -7645.635
+## 
+## Random effects:
+##  Formula: ~1 | momid
+##         (Intercept) Residual
+## StdDev:    364.4842 444.9955
+## 
+## Fixed effects: bweight ~ birthord * agebin 
+##                             Value Std.Error  DF  t-value p-value
+## (Intercept)             2978.3873  52.75519 798 56.45676  0.0000
+## birthord                  38.6175  12.53633 798  3.08044  0.0021
+## agebin(17,100]            46.6289  86.72900 198  0.53764  0.5914
+## birthord:agebin(17,100]   21.5961  20.60960 798  1.04786  0.2950
+##  Correlation: 
+##                         (Intr) brthrd a(17,1
+## birthord                -0.713              
+## agebin(17,100]          -0.608  0.434       
+## birthord:agebin(17,100]  0.434 -0.608 -0.713
+## 
+## Standardized Within-Group Residuals:
+##         Min          Q1         Med          Q3         Max 
+## -5.24250712 -0.43312124  0.04338865  0.53148398  3.30316603 
+## 
+## Number of Observations: 1000
+## Number of Groups: 200</code></pre>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit2</span><span class="op">)</span></pre></div>
+<pre><code>## Approximate 95% confidence intervals
+## 
+##  Fixed effects:
+##                              lower       est.      upper
+## (Intercept)             2874.83196 2978.38730 3081.94264
+## birthord                  14.00938   38.61746   63.22554
+## agebin(17,100]          -124.40219   46.62891  217.66002
+## birthord:agebin(17,100]  -18.85938   21.59605   62.05148
+## attr(,"label")
+## [1] "Fixed effects:"
+## 
+##  Random Effects:
+##   Level: momid 
+##                    lower     est.    upper
+## sd((Intercept)) 320.4723 364.4842 414.5406
+## 
+##  Within-group standard error:
+##    lower     est.    upper 
+## 423.6907 444.9955 467.3716</code></pre>
+</div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
