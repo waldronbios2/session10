@@ -214,7 +214,6 @@ summary(gagee1)
 ```
 
 ```{r}
-library(gee)
 gagee2 <- gee(bweight ~ birthord*initwght, data = ga, id = momid, corstr = "unstructured")
 summary(gagee2)
 ```

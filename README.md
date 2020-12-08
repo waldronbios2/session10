@@ -32,9 +32,11 @@
 1. Gain an intuitive understanding of ICC through simulated data
 2. Simulate correlated grouped data
 3. Use a heatmap and spaghetti plot to visualize correlated grouped data
-4. Fit random and mixed-effects models to correlated grouped data
-5. Calculate ICC from a random or mixed-effects model
-6. Fit a population average model, aka marginal model, using GEE
+4. Create a custom color-blind friendly palette for any plot using https://colorbrewer2.org/ and the RColorBrewer library
+5. Fit random and mixed-effects models to correlated grouped data
+6. Make QQ plots for mixed-effects models
+7. Calculate ICC from a random or mixed-effects model
+8. Fit a population average model, aka marginal model, using GEE
 
 **Exercises**
 
@@ -49,3 +51,4 @@
 9. Test the null hypotheses that baseline birth weights do not vary by mother
 10. Create QQ plots of residuals and random intercepts for this model.
 11. Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.
+12. Repeat above hypothesis tests using GEE
