@@ -244,6 +244,17 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </li>
 </ul>
 </div>
+<div id="fit-this-mixed-effects-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#fit-this-mixed-effects-model" class="anchor"></a>Fit this mixed-effects model</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
+<span class="va">fitmix</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">fecfat</span> <span class="op">~</span> <span class="va">pilltype</span>, 
+                    data <span class="op">=</span> <span class="va">dat</span>, 
+                    random <span class="op">=</span>  <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span></pre></div>
+
+<p>Note: the <code>lme4</code> package is another popular alternative</p>
+</div>
 <div id="mixed-effects-model-coeffients-variances-icc" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mixed-effects-model-coeffients-variances-icc" class="anchor"></a>Mixed effects model coeffients, variances, ICC</h2>
@@ -291,12 +302,12 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 <div id="mixed-effects-model-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mixed-effects-model-results" class="anchor"></a>Mixed effects model results</h2>
-<p>A plot of the random intercept: <img src="session_lecture_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>A plot of the random intercept: <img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 <div id="mixed-effects-model-diagnostics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mixed-effects-model-diagnostics" class="anchor"></a>Mixed effects model diagnostics</h2>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p>`` <img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="mixed-effects-model-results-1" class="section level2">
 <h2 class="hasAnchor">
@@ -425,26 +436,11 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </ul>
 </li>
 </ul>
-<pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   momid = col_double(),
-##   birthord = col_double(),
-##   momage = col_double(),
-##   timesnc = col_double(),
-##   lowbrth = col_double(),
-##   bweight = col_double(),
-##   delwght = col_double(),
-##   lastwght = col_double(),
-##   initage = col_double(),
-##   initwght = col_double(),
-##   cinitage = col_double()
-## )</code></pre>
 </div>
 <div id="georgia-birthweights-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#georgia-birthweights-dataset" class="anchor"></a>Georgia Birthweights dataset</h2>
-<p>Boxplot and “Spaghetti” plot: <img src="session_lecture_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p>Boxplot and “Spaghetti” plot: <img src="session_lecture_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div id="georgia-birthweights-dataset-1" class="section level2">
 <h2 class="hasAnchor">
@@ -464,7 +460,7 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 <div id="georgia-birthweights-dataset-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#georgia-birthweights-dataset-2" class="anchor"></a>Georgia Birthweights dataset</h2>
-<p><img src="session_lecture_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="session_lecture_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 <div id="georgia-birthweights-dataset-3" class="section level2">
 <h2 class="hasAnchor">

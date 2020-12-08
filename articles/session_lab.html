@@ -181,21 +181,21 @@
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
 <pre><code>## Linear mixed-effects model fit by REML
 ##  Data: df2 
-##        AIC      BIC    logLik
-##   728.3162 738.1961 -361.1581
+##       AIC     BIC   logLik
+##   773.562 783.442 -383.781
 ## 
 ## Random effects:
 ##  Formula: ~1 | id
 ##         (Intercept)  Residual
-## StdDev:    1.472946 0.9440575
+## StdDev:    1.861543 0.9672075
 ## 
 ## Fixed effects: value ~ 1 
 ##                Value Std.Error  DF  t-value p-value
-## (Intercept) 9.802525 0.1617156 100 60.61584       0
+## (Intercept) 9.759054 0.1983202 100 49.20858       0
 ## 
 ## Standardized Within-Group Residuals:
-##          Min           Q1          Med           Q3          Max 
-## -2.041901203 -0.423536946  0.007016895  0.493807281  2.176449315 
+##         Min          Q1         Med          Q3         Max 
+## -2.36092874 -0.48921030 -0.01196222  0.54294137  2.01981835 
 ## 
 ## Number of Observations: 200
 ## Number of Groups: 100</code></pre>
@@ -205,18 +205,18 @@
 ## 
 ##  Fixed effects:
 ##                lower     est.    upper
-## (Intercept) 9.481686 9.802525 10.12336
+## (Intercept) 9.365592 9.759054 10.15252
 ## attr(,"label")
 ## [1] "Fixed effects:"
 ## 
 ##  Random Effects:
 ##   Level: id 
 ##                    lower     est.    upper
-## sd((Intercept)) 1.242149 1.472946 1.746626
+## sd((Intercept)) 1.587579 1.861543 2.182784
 ## 
 ##  Within-group standard error:
 ##     lower      est.     upper 
-## 0.8213261 0.9440575 1.0851288</code></pre>
+## 0.8425604 0.9672075 1.1102947</code></pre>
 </div>
 <div id="estimate-icc-from-the-model-above--is-it-what-you-expected-from-the-group-and-residual-variances-you-simulated" class="section level1">
 <h1 class="hasAnchor">
@@ -232,19 +232,19 @@ ICC &amp; = corr(x_{ij}, x_{ik}) \\
 <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></pre></div>
 <pre><code>## id = pdLogChol(1) 
 ##             Variance  StdDev   
-## (Intercept) 2.1695702 1.4729461
-## Residual    0.8912445 0.9440575</code></pre>
+## (Intercept) 3.4653429 1.8615431
+## Residual    0.9354904 0.9672075</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="va">varests</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/VarCorr.html">VarCorr</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 <span class="va">varests</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">varests</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 0.7088212</code></pre>
+<pre><code>## [1] 0.7874288</code></pre>
 </div>
 <div id="estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="section level1">
 <h1 class="hasAnchor">
 <a href="#estimate-icc-simply-by-calculating-the-correlation-between-fecfat1-and-fecfat2--is-it-similar-to-the-estimate-above" class="anchor"></a>Estimate ICC simply by calculating the correlation between <code>fecfat1</code> and <code>fecfat2</code>. Is it similar to the estimate above?</h1>
 <div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">fecfat1</span>, <span class="va">fecfat2</span><span class="op">)</span><span class="op">)</span></pre></div>
-<pre><code>## [1] 0.7098636</code></pre>
+<pre><code>## [1] 0.7856696</code></pre>
 </div>
 <div id="load-and-do-basic-cleaning-of-the-georgia-birthweights-dataset-" class="section level1">
 <h1 class="hasAnchor">

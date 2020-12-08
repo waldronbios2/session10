@@ -387,6 +387,24 @@ Where we assume: \(SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)\)
 
 \end{frame}
 
+\begin{frame}[fragile]{Fit this mixed-effects model}
+\protect\hypertarget{fit-this-mixed-effects-model}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(nlme)}
+\NormalTok{fitmix <-}\StringTok{ }\NormalTok{nlme}\OperatorTok{::}\KeywordTok{lme}\NormalTok{(fecfat }\OperatorTok{~}\StringTok{ }\NormalTok{pilltype, }
+                    \DataTypeTok{data =}\NormalTok{ dat, }
+                    \DataTypeTok{random =}  \OperatorTok{~}\StringTok{ }\DecValTok{1} \OperatorTok{|}\StringTok{ }\NormalTok{subject)}
+\end{Highlighting}
+\end{Shaded}
+
+\tiny
+
+Note: the \texttt{lme4} package is another popular alternative
+
+\end{frame}
+
 \begin{frame}[fragile]{Mixed effects model coeffients, variances, ICC}
 \protect\hypertarget{mixed-effects-model-coeffients-variances-icc}{}
 
@@ -457,14 +475,15 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 \protect\hypertarget{mixed-effects-model-results}{}
 
 A plot of the random intercept:
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-3-1.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-4-1.pdf}
 
 \end{frame}
 
 \begin{frame}{Mixed effects model diagnostics}
 \protect\hypertarget{mixed-effects-model-diagnostics}{}
 
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-4-1.pdf}
+``
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-5-1.pdf}
 
 \end{frame}
 
@@ -641,7 +660,7 @@ Inference for variance terms (and fixed effects): \tiny
 
 \end{frame}
 
-\begin{frame}[fragile]{Longitudinal data examples}
+\begin{frame}{Longitudinal data examples}
 \protect\hypertarget{longitudinal-data-examples-1}{}
 
 \begin{itemize}
@@ -662,31 +681,13 @@ Inference for variance terms (and fixed effects): \tiny
   \end{itemize}
 \end{itemize}
 
-\begin{verbatim}
-## 
-## -- Column specification --------------------------------------------------------
-## cols(
-##   momid = col_double(),
-##   birthord = col_double(),
-##   momage = col_double(),
-##   timesnc = col_double(),
-##   lowbrth = col_double(),
-##   bweight = col_double(),
-##   delwght = col_double(),
-##   lastwght = col_double(),
-##   initage = col_double(),
-##   initwght = col_double(),
-##   cinitage = col_double()
-## )
-\end{verbatim}
-
 \end{frame}
 
 \begin{frame}{Georgia Birthweights dataset}
 \protect\hypertarget{georgia-birthweights-dataset}{}
 
 Boxplot and ``Spaghetti'' plot:
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-9-1.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-10-1.pdf}
 
 \end{frame}
 
@@ -720,7 +721,7 @@ coefficient for birth order
 \begin{frame}{Georgia Birthweights dataset}
 \protect\hypertarget{georgia-birthweights-dataset-2}{}
 
-\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-11-1.pdf}
+\includegraphics{../docs/articles/session_lecture_files/figure-beamer/unnamed-chunk-12-1.pdf}
 
 \end{frame}
 
