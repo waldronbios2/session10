@@ -34,7 +34,8 @@ always_allow_html: true
 7. Load and do basic cleaning of the Georgia Birthweights dataset.
 8. Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
 9. Test the null hypotheses that baseline birth weights do not vary by mother
-10. Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight
+10. Create QQ plots of residuals and random intercepts for this model.
+11. Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.
 
 # Simulation of correlated grouped data
 
@@ -155,10 +156,31 @@ gafit1 <- lme(bweight ~ birthord, data=ga,
 intervals(gafit1)
 ```
 
-# Test the null hypotheses that the mother's age (at first birth) is unrelated to baseline mean birth weight
+# Create QQ plots of residuals and random intercepts for this model.
+
+```{r}
+qqnorm(residuals(gafit1, type = "pearson"), main = "QQ plot residuals")
+qqline(residuals(gafit1, type = "pearson"))
+```
+
+```{r}
+head(ranef(gafit1))
+qqnorm(ranef(gafit1)[, 1], main = "QQ plot random intercepts")
+qqline(ranef(gafit1)[, 1])
+```
+
+# Test the null hypotheses that the effect of birth order not modified by mother's age at first birth or weight of first infant.
+
 
 ```{r}
 gafit2 <- lme(bweight ~ birthord*agebin, data=ga, 
+    random=~1|momid)
+summary(gafit2)
+intervals(gafit2)
+```
+
+```{r}
+gafit2 <- lme(bweight ~ birthord*initwght, data=ga, 
     random=~1|momid)
 summary(gafit2)
 intervals(gafit2)

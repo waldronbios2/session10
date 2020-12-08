@@ -319,7 +319,8 @@ grid.arrange(p1, p2, ncol=2)
 
 ```{r, message=FALSE}
 library(nlme)
-gafit1 <- lme(bweight ~ birthord, data=ga, random=~1|momid)
+gafit1 <- lme(bweight ~ birthord, data=ga, 
+              random=~1|momid)
 ```
 
 Note: there are not enough degrees of freedom to also fit a random coefficient for birth order

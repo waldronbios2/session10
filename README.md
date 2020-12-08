@@ -47,4 +47,5 @@
 7. Load and do basic cleaning of the Georgia Birthweights dataset.
 8. Make a boxplot and spaghetti plot for the Georgia Birthweights dataset
 9. Test the null hypotheses that baseline birth weights do not vary by mother
-10. Test the null hypotheses that the mother’s age (at first birth) is unrelated to baseline mean birth weight
+10. Create QQ plots of residuals and random intercepts for this model.
+11. Test the null hypotheses that the effect of birth order not modified by mother’s age at first birth or weight of first infant.
