@@ -303,18 +303,15 @@ p2 <- ggplot(ga, aes(x = birthord, y = bweight, group = momid)) +
 
 ## Georgia Birthweights dataset
 
-* Do birth weights or the effect of birth order vary by mother?
-     + random intercept, random slope
+* Does baseline birth weight vary by mother?
+     + random intercept
 
-```{r}
-gafit1 <- nlme::lme(bweight ~ birthord, data=ga, 
-    random=~birthord|momid,
-    na.action=na.omit,
-    control=list(msMaxIter=600, msMaxEval=600, 
-                 sing.tol=1e-20, msVerbose=FALSE))  
+```{r, message=FALSE}
+library(nlme)
+gafit1 <- lme(bweight ~ birthord, data=ga, random=~1|momid)
 ```
 
-Note: the control argument increases the max # iterations to allow convergence. If `msVerbose=TRUE`, it produces verbose output.
+Note: there are not enough degrees of freedom to also fit a random coefficient for birth order
 
 ## Georgia Birthweights dataset
 ```{r, echo=FALSE}
@@ -347,7 +344,7 @@ intervals(gafit1, which = "all")
     - correlation structure
 
 * Estimates correlation structure from the data rather than assuming normality    
-    - Requires a fair bit more clusters than observations per cluster
+    - Requires more clusters than observations per cluster
 
 * Estimates regression coefficients and robust standard errors
     - commonly by Generalized Estimating Equations (GEE)
@@ -371,13 +368,17 @@ $$
 
 ## Fit a population average model
 
-\tiny
 ```{r, message=FALSE, results="hide"}
 gafit.gee <- gee::gee(bweight ~ birthord,
                       corstr = "exchangeable",
                       id = momid,
                       data = ga)
 ```
+
+##   
+
+\tiny
+
 ```{r}
 summary(gafit.gee)
 ```
@@ -385,24 +386,24 @@ summary(gafit.gee)
 
 ## Correlation assumptions for GEE
 
-* Must make some assumption about the form of correlation among grouped observations
+Must make some assumption about the form of correlation among grouped observations. Some options are:
 
-* Independence
+* Independence:
     - no correlation between measurements within group
-* Exchangeable
+* Exchangeable:
     - all pairwise correlations are the same (in large-N limit)
     - nothing distinguishes one member of a cluster from another
     - appropriate in the absence of other data structures such as measurements taken through time or space
-* Auto-regressive
+* Auto-regressive:
     - observations taken more closely in time are more highly correlated
 
 ## Correlation assumptions for GEE (cont'd)
 
-* Unstructured
+* Unstructured:
     - estimates a separate correlation between observations taken on each pair of "times"
-* Non-stationary
+* Non-stationary:
     - similar to unstructured, but assumes all correlations for pairs separated far enough in time are zero
-* Stationary
+* Stationary:
     - e.g. stationary of order 2: observations taken at time points 1 and 3 have the same correlation as time points 2 and 4
     - but this might be different from the correlation between observations taken at times 2 and 3
     - correlations for observations 3 or more time periods apart assumed to be zero
