@@ -295,19 +295,21 @@ ga <- read_csv("gababies.csv") %>%
 ## Georgia Birthweights dataset
 
 Boxplot and "Spaghetti" plot:
-```{r, echo=FALSE}
-ggplot(ga, aes(x = birthord, group = birthord, y = bweight)) +
+```{r, echo=FALSE, message=FALSE}
+p1 <- ggplot(ga, aes(x = birthord, group = birthord, y = bweight)) +
   geom_boxplot(notch = FALSE, outlier.shape = NA) +
   geom_jitter(width=0.2, col = "black", alpha = 0.25) +
   theme_grey(base_size = 22) + 
   labs(subtitle = "Georgia birthweight dataset") +
   xlab("Birth order") + ylab("Birth Weight (g)")
 p2 <- ggplot(ga, aes(x = birthord, y = bweight, group = momid)) +
-  geom_line() +
+  geom_line(alpha = 0.25) +
   theme_grey(base_size = 22) + 
   theme(legend.position = "none") +
   labs(subtitle = "Georgia birthweight dataset") +
   xlab("Birth order") + ylab("Birth Weight (g)")
+library(gridExtra)
+grid.arrange(p1, p2, ncol=2)
 ```
 
 ## Georgia Birthweights dataset
