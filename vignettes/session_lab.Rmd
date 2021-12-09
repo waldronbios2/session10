@@ -51,7 +51,7 @@ n <- 100
 
 ```{r}
 library(tidyverse)
-set.seed(1)
+set.seed(1)  # try a different seed!
 df <- tibble(subj_mean = rnorm(n, mean = 10, sd = sigma_subj)) %>%
   mutate(id = factor(1:n)) %>%
   mutate(fecfat1 = rnorm(n, mean = 0, sd = sigma_resid) + subj_mean) %>%
@@ -125,7 +125,7 @@ ICC & = corr(x_{ij}, x_{ik}) \\
 \end{equation*}
 
 ```{r}
-1.972075^2 / (1.972075^2 + 1.00932^2)
+2.026972^2 / (2.026972^2 + 0.9988031^2)
 ICClme <- function(fit){
   cors <- as.numeric(VarCorr(fit))
   cors[1] / (cors[1] + cors[2])
@@ -217,3 +217,12 @@ summary(gagee1)
 gagee2 <- gee(bweight ~ birthord*initwght, data = ga, id = momid, corstr = "unstructured")
 summary(gagee2)
 ```
+
+# Heatmap of GA babies dataset
+
+```{r}
+pivot_wider(ga, values_from = bweight, names_from=birthord, id_cols = momid) %>%
+  select(-momid) %>%
+  pheatmap(clustering_distance_rows = "correlation", clustering_distance_cols = "correlation", scale = "column")
+```
+
