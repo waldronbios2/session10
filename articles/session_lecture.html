@@ -149,6 +149,10 @@
 <div class="figure">
 <img src="VittinghoffTable71.png" alt=""><p class="caption">Fecal Fat dataset</p>
 </div>
+<pre><code>## Warning: package 'tidyverse' was built under R version 4.0.3</code></pre>
+<pre><code>## Warning: package 'purrr' was built under R version 4.0.3</code></pre>
+<pre><code>## Warning: package 'stringr' was built under R version 4.0.3</code></pre>
+<pre><code>## Warning: package 'gridExtra' was built under R version 4.0.3</code></pre>
 </div>
 <div id="fecal-fat-dataset-1" class="section level2">
 <h2 class="hasAnchor">
@@ -247,7 +251,7 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 <div id="fit-this-mixed-effects-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-this-mixed-effects-model" class="anchor"></a>Fit this mixed-effects model</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
 <span class="va">fitmix</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">fecfat</span> <span class="op">~</span> <span class="va">pilltype</span>, 
                     data <span class="op">=</span> <span class="va">dat</span>, 
@@ -452,7 +456,7 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
 <span class="va">gafit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>, data<span class="op">=</span><span class="va">ga</span>, 
               random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span></pre></div>
@@ -467,7 +471,7 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 <h2 class="hasAnchor">
 <a href="#georgia-birthweights-dataset-3" class="anchor"></a>Georgia Birthweights dataset</h2>
 
-<div class="sourceCode" id="cb6"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span></pre></div>
 <pre><code>## Linear mixed-effects model fit by REML
 ##  Data: ga 
@@ -498,7 +502,7 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 <h2 class="hasAnchor">
 <a href="#georgia-birthweights-dataset-4" class="anchor"></a>Georgia Birthweights dataset</h2>
 
-<div class="sourceCode" id="cb8"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit1</span>, which <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></pre></div>
 <pre><code>## Approximate 95% confidence intervals
 ## 
@@ -570,7 +574,7 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 <div id="fit-a-population-average-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-a-population-average-model" class="anchor"></a>Fit a population average model</h2>
-<div class="sourceCode" id="cb10"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="va">gafit.gee</span> <span class="op">&lt;-</span> <span class="fu">gee</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gee/man/gee.html">gee</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>,
                       corstr <span class="op">=</span> <span class="st">"exchangeable"</span>,
                       id <span class="op">=</span> <span class="va">momid</span>,
@@ -579,7 +583,7 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 <div id="section" class="section level2">
 <h2></h2>
 
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit.gee</span><span class="op">)</span></pre></div>
 <pre><code>## 
 ##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
