@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,14 +39,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">session10</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lecture and Lab
      
     <span class="caret"></span>
@@ -57,23 +59,23 @@
       <a href="../articles/session_lecture.pdf">Lecture notes PDF</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/session_lab.html">Lab materials</a>
     </li>
   </ul>
 </li>
-<li class="dropdown-header">
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/waldronbios2/session10/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/waldronbios2/session10/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/leviwaldron1">
-    <span class="fab fa fab fa-twitter fa-lg"></span>
+  <a href="https://twitter.com/leviwaldron1" class="external-link">
+    <span class="fab fa-twitter fa-lg"></span>
      
   </a>
 </li>
@@ -87,86 +89,94 @@
 
       
 
-      </header><script src="session_lecture_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Session 10: Repeated Measures and Longitudinal Analysis II</h1>
-                        <h4 class="author">Levi Waldron</h4>
+      <h1 data-toc-skip>Session 10: Repeated Measures and Longitudinal
+Analysis II</h1>
+                        <h4 data-toc-skip class="author">Levi
+Waldron</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session10/blob/master/vignettes/session_lecture.Rmd"><code>vignettes/session_lecture.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/waldronbios2/session10/blob/HEAD/vignettes/session_lecture.Rmd" class="external-link"><code>vignettes/session_lecture.Rmd</code></a></small>
       <div class="hidden name"><code>session_lecture.Rmd</code></div>
 
     </div>
 
     
     
-<div id="learning-objectives-and-outline" class="section level1">
-<h1 class="hasAnchor">
-<a href="#learning-objectives-and-outline" class="anchor"></a>Learning objectives and outline</h1>
-<div id="learning-objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#learning-objectives" class="anchor"></a>Learning objectives</h2>
+<div class="section level2">
+<h2 id="learning-objectives-and-outline">Learning objectives and outline<a class="anchor" aria-label="anchor" href="#learning-objectives-and-outline"></a>
+</h2>
+<div class="section level3">
+<h3 id="learning-objectives">Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Define mixed effects models and population average models</li>
 <li>Perform model diagnostics for random effects models</li>
 <li>Interpret random intercepts and random slopes</li>
 <li>Define and perform population average models</li>
-<li>Define assumptions on correlation structure in hierarchical models</li>
+<li>Define assumptions on correlation structure in hierarchical
+models</li>
 <li>Choose between hierarchical modeling strategies</li>
 </ol>
 </div>
-<div id="outline" class="section level2">
-<h2 class="hasAnchor">
-<a href="#outline" class="anchor"></a>Outline</h2>
+<div class="section level3">
+<h3 id="outline">Outline<a class="anchor" aria-label="anchor" href="#outline"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Review of fecal fat dataset</li>
 <li>Summary of non-hierarchical approaches</li>
 <li>Mixed effects models</li>
 <li>Longitudinal data and the Georgia Birthweights dataset</li>
-<li>Population average models and Generalized Estimating Equations (GEE)</li>
+<li>Population average models and Generalized Estimating Equations
+(GEE)</li>
 </ol>
 <ul>
 <li>Vittinghoff sections 7.2, 7.3, 7.5</li>
 </ul>
 </div>
 </div>
-<div id="review" class="section level1">
-<h1 class="hasAnchor">
-<a href="#review" class="anchor"></a>Review</h1>
-<div id="fecal-fat-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fecal-fat-dataset" class="anchor"></a>Fecal fat dataset</h2>
+<div class="section level2">
+<h2 id="review">Review<a class="anchor" aria-label="anchor" href="#review"></a>
+</h2>
+<div class="section level3">
+<h3 id="fecal-fat-dataset">Fecal fat dataset<a class="anchor" aria-label="anchor" href="#fecal-fat-dataset"></a>
+</h3>
 <ul>
-<li>Lack of digestive enzymes in the intestine can cause bowel absorption problems.
+<li>Lack of digestive enzymes in the intestine can cause bowel
+absorption problems.
 <ul>
 <li>This will be indicated by excess fat in the feces.</li>
 <li>Pancreatic enzyme supplements can alleviate the problem.</li>
-<li>fecfat.csv: a study of fecal fat quantity (g/day) for individuals given each of a placebo and 3 types of pills</li>
+<li>fecfat.csv: a study of fecal fat quantity (g/day) for individuals
+given each of a placebo and 3 types of pills</li>
 </ul>
 </li>
 </ul>
-<div class="figure">
-<img src="VittinghoffTable71.png" alt=""><p class="caption">Fecal Fat dataset</p>
+<div class="float">
+<img src="VittinghoffTable71.png" alt="Fecal Fat dataset"><div class="figcaption">Fecal Fat dataset</div>
 </div>
-<pre><code>## Warning: package 'tidyverse' was built under R version 4.0.3</code></pre>
-<pre><code>## Warning: package 'purrr' was built under R version 4.0.3</code></pre>
-<pre><code>## Warning: package 'stringr' was built under R version 4.0.3</code></pre>
-<pre><code>## Warning: package 'gridExtra' was built under R version 4.0.3</code></pre>
 </div>
-<div id="fecal-fat-dataset-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fecal-fat-dataset-1" class="anchor"></a>Fecal fat dataset</h2>
+<div class="section level3">
+<h3 id="fecal-fat-dataset-1">Fecal fat dataset<a class="anchor" aria-label="anchor" href="#fecal-fat-dataset-1"></a>
+</h3>
+<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
 <p><img src="session_lecture_files/figure-html/boxplot-1.png" width="700"></p>
 </div>
-<div id="analysis-strategies-for-hierarchical-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#analysis-strategies-for-hierarchical-data" class="anchor"></a>Analysis strategies for hierarchical data</h2>
+<div class="section level3">
+<h3 id="analysis-strategies-for-hierarchical-data">Analysis strategies for hierarchical data<a class="anchor" aria-label="anchor" href="#analysis-strategies-for-hierarchical-data"></a>
+</h3>
 <ul>
 <li>Fixed effects and other non-hierarchical strategies</li>
 <li>Random / mixed effects models
 <ul>
-<li>model certain regression coefficients (intercept, slopes) as random variables</li>
+<li>model certain regression coefficients (intercept, slopes) as random
+variables</li>
 </ul>
 </li>
 <li>Population average models
@@ -177,210 +187,226 @@
 </ul>
 </div>
 </div>
-<div id="non-hierarchical-analysis-strategies" class="section level1">
-<h1 class="hasAnchor">
-<a href="#non-hierarchical-analysis-strategies" class="anchor"></a>Non-hierarchical analysis strategies</h1>
-<div id="non-hierarchical-analysis-strategies-for-hierarchical-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#non-hierarchical-analysis-strategies-for-hierarchical-data" class="anchor"></a>Non-hierarchical analysis strategies for hierarchical data</h2>
+<div class="section level2">
+<h2 id="non-hierarchical-analysis-strategies">Non-hierarchical analysis strategies<a class="anchor" aria-label="anchor" href="#non-hierarchical-analysis-strategies"></a>
+</h2>
+<div class="section level3">
+<h3 id="non-hierarchical-analysis-strategies-for-hierarchical-data">Non-hierarchical analysis strategies for hierarchical data<a class="anchor" aria-label="anchor" href="#non-hierarchical-analysis-strategies-for-hierarchical-data"></a>
+</h3>
 <ul>
 <li>Analyses for each subgroup
 <ul>
 <li>e.g., look at each patient independently</li>
-<li>doesn’t work at all in this example, and in general is not an integrated analysis of the whole data</li>
-<li>could sort of work for an example with many patients per doctor, a few doctors</li>
+<li>doesn’t work at all in this example, and in general is not an
+integrated analysis of the whole data</li>
+<li>could sort of work for an example with many patients per doctor, a
+few doctors</li>
 </ul>
 </li>
 <li>Analysis at the highest level in the hierarchy
 <ul>
 <li>first summarize data to highest level</li>
 <li>doesn’t work at all in this example</li>
-<li>could sort of work for an example with few patients per doctor, many doctors</li>
+<li>could sort of work for an example with few patients per doctor, many
+doctors</li>
 </ul>
 </li>
 <li>Analysis on “Derived Variables”
 <ul>
-<li>consider each treatment type separately, take differences in fat levels between treatment/control for each patient and use paired t-tests</li>
+<li>consider each treatment type separately, take differences in fat
+levels between treatment/control for each patient and use paired
+t-tests</li>
 <li>can work, but not for unbalanced groups</li>
 </ul>
 </li>
 <li>Fixed-effects models</li>
 </ul>
 </div>
-<div id="when-is-hierarchical-analysis-definitely-needed" class="section level2">
-<h2 class="hasAnchor">
-<a href="#when-is-hierarchical-analysis-definitely-needed" class="anchor"></a>When is hierarchical analysis definitely needed?</h2>
+<div class="section level3">
+<h3 id="when-is-hierarchical-analysis-definitely-needed">When is hierarchical analysis definitely needed?<a class="anchor" aria-label="anchor" href="#when-is-hierarchical-analysis-definitely-needed"></a>
+</h3>
 <ol style="list-style-type: decimal">
-<li>the correlation structure is of interest, <em>e.g.</em> familial aggregation of disease, or consistency of treatment within centers</li>
-<li>we wish to “borrow strength” across the levels of a hierarchy in order to improve estimates</li>
+<li>the correlation structure is of interest, <em>e.g.</em> familial
+aggregation of disease, or consistency of treatment within centers</li>
+<li>we wish to “borrow strength” across the levels of a hierarchy in
+order to improve estimates</li>
 <li>dealing with unbalanced data</li>
 <li>we want to benefit from software designed for hierarchical data</li>
 </ol>
 </div>
 </div>
-<div id="mixed-effects-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#mixed-effects-models" class="anchor"></a>Mixed effects models</h1>
-<div id="mixed-effects-models-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-models-1" class="anchor"></a>Mixed effects models</h2>
+<div class="section level2">
+<h2 id="mixed-effects-models">Mixed effects models<a class="anchor" aria-label="anchor" href="#mixed-effects-models"></a>
+</h2>
+<div class="section level3">
+<h3 id="mixed-effects-models-1">Mixed effects models<a class="anchor" aria-label="anchor" href="#mixed-effects-models-1"></a>
+</h3>
 <ul>
 <li>Model looks like two-way ANOVA: <span class="math display">\[
-FECFAT_{ij} = \beta_0 + \beta_{subject i} SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij}
+FECFAT_{ij} = \beta_0 + \beta_{subject i} SUBJECT_i + \beta_{pilltype j}
+PILLTYPE_j + \epsilon_{ij}
 \]</span>
 <ul>
-<li>Assumption: <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma_\epsilon^2)\)</span>
+<li>Assumption: <span class="math inline">\(\epsilon_i
+\stackrel{iid}{\sim} N(0, \sigma_\epsilon^2)\)</span>
 </li>
 </ul>
 </li>
-<li>But instead of fitting a <span class="math inline">\(\beta\)</span> to each individual, we assume that the subject effects are selected from a distribution of possible subject effects: <span class="math display">\[
-FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij}
+<li>But instead of fitting a <span class="math inline">\(\beta\)</span>
+to each individual, we assume that the subject effects are selected from
+a distribution of possible subject effects: <span class="math display">\[
+FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j +
+\epsilon_{ij}
 \]</span>
 </li>
 </ul>
-<p>Where we assume: <span class="math inline">\(SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)\)</span></p>
+<p>Where we assume: <span class="math inline">\(SUBJECT_i
+\stackrel{iid}{\sim} N(0, \tau_{00}^2)\)</span></p>
 <ul>
 <li>This is a <em>mixed effects</em> model because:
 <ul>
 <li>the “true” intercept varies randomly from patient to patient</li>
-<li>the “true” (population) coefficient of treatment is fixed (the same for everyone)</li>
+<li>the “true” (population) coefficient of treatment is fixed (the same
+for everyone)</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="fit-this-mixed-effects-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-this-mixed-effects-model" class="anchor"></a>Fit this mixed-effects model</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
-<span class="va">fitmix</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">fecfat</span> <span class="op">~</span> <span class="va">pilltype</span>, 
-                    data <span class="op">=</span> <span class="va">dat</span>, 
-                    random <span class="op">=</span>  <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span></pre></div>
-
-<p>Note: the <code>lme4</code> package is another popular alternative</p>
+<div class="section level3">
+<h3 id="fit-this-mixed-effects-model">Fit this mixed-effects model<a class="anchor" aria-label="anchor" href="#fit-this-mixed-effects-model"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/" class="external-link">nlme</a></span><span class="op">)</span></span>
+<span><span class="va">fitmix</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">lme</a></span><span class="op">(</span><span class="va">fecfat</span> <span class="op">~</span> <span class="va">pilltype</span>, </span>
+<span>                    data <span class="op">=</span> <span class="va">dat</span>, </span>
+<span>                    random <span class="op">=</span>  <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span></span></code></pre></div>
+<p>Note: the <code>lme4</code> package is another popular
+alternative</p>
 </div>
-<div id="mixed-effects-model-coeffients-variances-icc" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-model-coeffients-variances-icc" class="anchor"></a>Mixed effects model coeffients, variances, ICC</h2>
-
-<pre><code>## Linear mixed-effects model fit by REML
-##   Data: dat 
-##   Log-restricted-likelihood: -84.55594
-##   Fixed: fecfat ~ pilltype 
-##     (Intercept)  pilltypetablet pilltypecapsule  pilltypecoated 
-##       38.083334      -21.550001      -20.666667       -7.016668 
-## 
-## Random effects:
-##  Formula: ~1 | subject
-##         (Intercept) Residual
-## StdDev:    15.89557 10.34403
-## 
-## Number of Observations: 24
-## Number of Groups: 6</code></pre>
-<p><span class="math inline">\(ICC = 15.9^2 / (15.9^2 + 10.34^2)\)</span> = 0.7 = 0.7.</p>
-
+<div class="section level3">
+<h3 id="mixed-effects-model-coeffients-variances-icc">Mixed effects model coeffients, variances, ICC<a class="anchor" aria-label="anchor" href="#mixed-effects-model-coeffients-variances-icc"></a>
+</h3>
+<pre><code><span><span class="co">## Linear mixed-effects model fit by REML</span></span>
+<span><span class="co">##   Data: dat </span></span>
+<span><span class="co">##   Log-restricted-likelihood: -84.55594</span></span>
+<span><span class="co">##   Fixed: fecfat ~ pilltype </span></span>
+<span><span class="co">##     (Intercept)  pilltypetablet pilltypecapsule  pilltypecoated </span></span>
+<span><span class="co">##       38.083334      -21.550001      -20.666667       -7.016668 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Random effects:</span></span>
+<span><span class="co">##  Formula: ~1 | subject</span></span>
+<span><span class="co">##         (Intercept) Residual</span></span>
+<span><span class="co">## StdDev:    15.89557 10.34403</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Observations: 24</span></span>
+<span><span class="co">## Number of Groups: 6</span></span></code></pre>
+<p><span class="math inline">\(ICC = 15.9^2 / (15.9^2 +
+10.34^2)\)</span> = 0.7 = 0.7.</p>
 <ul>
-<li>Recall ICC is a measure of how large the subject effect is, in relation to the error term</li>
+<li>Recall ICC is a measure of how large the subject effect is, in
+relation to the error term</li>
 <li>Variances were estimated directly by the model!</li>
 </ul>
 </div>
-<div id="assumptions-of-the-mixed-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#assumptions-of-the-mixed-model" class="anchor"></a>Assumptions of the mixed model</h2>
+<div class="section level3">
+<h3 id="assumptions-of-the-mixed-model">Assumptions of the mixed model<a class="anchor" aria-label="anchor" href="#assumptions-of-the-mixed-model"></a>
+</h3>
 <p><span class="math display">\[
-FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij}
+FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j +
+\epsilon_{ij}
 \]</span></p>
 <ul>
 <li>Normally distributed residuals as in fixed effects model:
 <ul>
-<li><span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma_\epsilon^2)\)</span></li>
+<li><span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0,
+\sigma_\epsilon^2)\)</span></li>
 </ul>
 </li>
 <li>Normally distributed <strong>latent variable</strong>:
 <ul>
-<li><span class="math inline">\(SUBJECT_i \stackrel{iid}{\sim} N(0, \tau_{00}^2)\)</span></li>
+<li><span class="math inline">\(SUBJECT_i \stackrel{iid}{\sim} N(0,
+\tau_{00}^2)\)</span></li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="mixed-effects-model-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-model-results" class="anchor"></a>Mixed effects model results</h2>
-<p>A plot of the random intercept: <img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<div class="section level3">
+<h3 id="mixed-effects-model-results">Mixed effects model results<a class="anchor" aria-label="anchor" href="#mixed-effects-model-results"></a>
+</h3>
+<p>A plot of the random intercept:
+<img src="session_lecture_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
-<div id="mixed-effects-model-diagnostics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-model-diagnostics" class="anchor"></a>Mixed effects model diagnostics</h2>
-<p>`` <img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="section level3">
+<h3 id="mixed-effects-model-diagnostics">Mixed effects model diagnostics<a class="anchor" aria-label="anchor" href="#mixed-effects-model-diagnostics"></a>
+</h3>
+<p>``
+<img src="session_lecture_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
-<div id="mixed-effects-model-results-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-model-results-1" class="anchor"></a>Mixed effects model results</h2>
-
-<pre><code>## Linear mixed-effects model fit by REML
-##  Data: dat 
-##        AIC      BIC    logLik
-##   181.1119 187.0863 -84.55594
-## 
-## Random effects:
-##  Formula: ~1 | subject
-##         (Intercept) Residual
-## StdDev:    15.89557 10.34403
-## 
-## Fixed effects: fecfat ~ pilltype 
-##                     Value Std.Error DF   t-value p-value
-## (Intercept)      38.08333  7.742396 15  4.918805  0.0002
-## pilltypetablet  -21.55000  5.972127 15 -3.608430  0.0026
-## pilltypecapsule -20.66667  5.972127 15 -3.460521  0.0035
-## pilltypecoated   -7.01667  5.972127 15 -1.174903  0.2583
-##  Correlation: 
-##                 (Intr) plltypt plltypcp
-## pilltypetablet  -0.386                 
-## pilltypecapsule -0.386  0.500          
-## pilltypecoated  -0.386  0.500   0.500  
-## 
-## Standardized Within-Group Residuals:
-##          Min           Q1          Med           Q3          Max 
-## -1.210052934 -0.615068039 -0.002727166  0.457105344  1.725618643 
-## 
-## Number of Observations: 24
-## Number of Groups: 6</code></pre>
-
+<div class="section level3">
+<h3 id="mixed-effects-model-results-1">Mixed effects model results<a class="anchor" aria-label="anchor" href="#mixed-effects-model-results-1"></a>
+</h3>
+<pre><code><span><span class="co">## Linear mixed-effects model fit by REML</span></span>
+<span><span class="co">##   Data: dat </span></span>
+<span><span class="co">##        AIC      BIC    logLik</span></span>
+<span><span class="co">##   181.1119 187.0863 -84.55594</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Random effects:</span></span>
+<span><span class="co">##  Formula: ~1 | subject</span></span>
+<span><span class="co">##         (Intercept) Residual</span></span>
+<span><span class="co">## StdDev:    15.89557 10.34403</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fixed effects:  fecfat ~ pilltype </span></span>
+<span><span class="co">##                     Value Std.Error DF   t-value p-value</span></span>
+<span><span class="co">## (Intercept)      38.08333  7.742396 15  4.918805  0.0002</span></span>
+<span><span class="co">## pilltypetablet  -21.55000  5.972127 15 -3.608430  0.0026</span></span>
+<span><span class="co">## pilltypecapsule -20.66667  5.972127 15 -3.460521  0.0035</span></span>
+<span><span class="co">## pilltypecoated   -7.01667  5.972127 15 -1.174903  0.2583</span></span>
+<span><span class="co">##  Correlation: </span></span>
+<span><span class="co">##                 (Intr) plltypt plltypcp</span></span>
+<span><span class="co">## pilltypetablet  -0.386                 </span></span>
+<span><span class="co">## pilltypecapsule -0.386  0.500          </span></span>
+<span><span class="co">## pilltypecoated  -0.386  0.500   0.500  </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Standardized Within-Group Residuals:</span></span>
+<span><span class="co">##          Min           Q1          Med           Q3          Max </span></span>
+<span><span class="co">## -1.210052934 -0.615068039 -0.002727166  0.457105344  1.725618643 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Observations: 24</span></span>
+<span><span class="co">## Number of Groups: 6</span></span></code></pre>
 <ul>
 <li>Note: correlation of the estimator of the fixed effects
 <ul>
-<li>high correlations may (but not necessarily) be due to collinearity</li>
+<li>high correlations may (but not necessarily) be due to
+collinearity</li>
 <li>not usually useful, not included in output of some packages</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="mixed-effects-model-results-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixed-effects-model-results-2" class="anchor"></a>Mixed effects model results</h2>
+<div class="section level3">
+<h3 id="mixed-effects-model-results-2">Mixed effects model results<a class="anchor" aria-label="anchor" href="#mixed-effects-model-results-2"></a>
+</h3>
 <p>Inference for variance terms (and fixed effects): </p>
-<pre><code>## Approximate 95% confidence intervals
-## 
-##  Fixed effects:
-##                     lower       est.     upper
-## (Intercept)      21.58081  38.083334 54.585860
-## pilltypetablet  -34.27929 -21.550001 -8.820714
-## pilltypecapsule -33.39595 -20.666667 -7.937381
-## pilltypecoated  -19.74595  -7.016668  5.712618
-## attr(,"label")
-## [1] "Fixed effects:"
-## 
-##  Random Effects:
-##   Level: subject 
-##                   lower     est.    upper
-## sd((Intercept)) 8.00117 15.89557 31.57904
-## 
-##  Within-group standard error:
-##    lower     est.    upper 
-##  7.23240 10.34403 14.79438</code></pre>
-
+<pre><code><span><span class="co">## Approximate 95% confidence intervals</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Fixed effects:</span></span>
+<span><span class="co">##                     lower       est.     upper</span></span>
+<span><span class="co">## (Intercept)      21.58081  38.083334 54.585860</span></span>
+<span><span class="co">## pilltypetablet  -34.27929 -21.550001 -8.820714</span></span>
+<span><span class="co">## pilltypecapsule -33.39595 -20.666667 -7.937381</span></span>
+<span><span class="co">## pilltypecoated  -19.74595  -7.016668  5.712618</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Random Effects:</span></span>
+<span><span class="co">##   Level: subject </span></span>
+<span><span class="co">##                   lower     est.    upper</span></span>
+<span><span class="co">## sd((Intercept)) 8.00117 15.89557 31.57904</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Within-group standard error:</span></span>
+<span><span class="co">##    lower     est.    upper </span></span>
+<span><span class="co">##  7.23240 10.34403 14.79438</span></span></code></pre>
 <ul>
-<li>Would conclude that variation of the intercept between subjects is non-zero
+<li>Would conclude that variation of the intercept between subjects is
+non-zero
 <ul>
 <li>not attributable to within-subject variation</li>
 </ul>
@@ -388,67 +414,81 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </ul>
 </div>
 </div>
-<div id="longitudinal-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#longitudinal-data" class="anchor"></a>Longitudinal data</h1>
-<div id="longitudinal-data-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#longitudinal-data-1" class="anchor"></a>Longitudinal data</h2>
+<div class="section level2">
+<h2 id="longitudinal-data">Longitudinal data<a class="anchor" aria-label="anchor" href="#longitudinal-data"></a>
+</h2>
+<div class="section level3">
+<h3 id="longitudinal-data-1">Longitudinal data<a class="anchor" aria-label="anchor" href="#longitudinal-data-1"></a>
+</h3>
 <ul>
-<li>Interested in the change in the value of a variable within a “subject”</li>
+<li>Interested in the change in the value of a variable within a
+“subject”</li>
 <li>Collect data repeatedly through time.</li>
-<li>For hierarchical longitudinal analysis to be effective, before/after measurements need to be positively correlated</li>
+<li>For hierarchical longitudinal analysis to be effective, before/after
+measurements need to be positively correlated</li>
 </ul>
 </div>
-<div id="longitudinal-data-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#longitudinal-data-2" class="anchor"></a>Longitudinal data</h2>
+<div class="section level3">
+<h3 id="longitudinal-data-2">Longitudinal data<a class="anchor" aria-label="anchor" href="#longitudinal-data-2"></a>
+</h3>
 <ul>
-<li>Interested in the change in the value of a variable within a “subject”</li>
+<li>Interested in the change in the value of a variable within a
+“subject”</li>
 <li>Collect data repeatedly through time.</li>
-<li>For hierarchical longitudinal analysis to be effective, before/after measurements need to be positively correlated</li>
+<li>For hierarchical longitudinal analysis to be effective, before/after
+measurements need to be positively correlated</li>
 </ul>
 </div>
-<div id="longitudinal-data-examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#longitudinal-data-examples" class="anchor"></a>Longitudinal data examples</h2>
+<div class="section level3">
+<h3 id="longitudinal-data-examples">Longitudinal data examples<a class="anchor" aria-label="anchor" href="#longitudinal-data-examples"></a>
+</h3>
 <ul>
-<li>Example 1: a measure of sleepiness before and after administration of treatment or placebo</li>
+<li>Example 1: a measure of sleepiness before and after administration
+of treatment or placebo</li>
 <li>Example 2: Study of Osteoporotic Fractores (SOF dataset)
 <ul>
 <li>9,704 women tracked with clinical visits every two years</li>
-<li>Bone Mineral Density (BMD), Body Mass Index (BMI), many other variables</li>
+<li>Bone Mineral Density (BMD), Body Mass Index (BMI), many other
+variables</li>
 </ul>
 </li>
 <li>Questions for Example 2:
 <ol style="list-style-type: decimal">
-<li>Is change in BMD related to age at menopause? This is a time-invariant predictor, age at menopause, with time-dependent changes in the outcome, BMD.</li>
-<li>Is change in BMD related to change in BMI? This is an analysis relating a time-varying predictor, BMI, with changes in the outcome, BMD. BMI varies quite a lot between women, but also varies within a woman over time.</li>
+<li>Is change in BMD related to age at menopause? This is a
+time-invariant predictor, age at menopause, with time-dependent changes
+in the outcome, BMD.</li>
+<li>Is change in BMD related to change in BMI? This is an analysis
+relating a time-varying predictor, BMI, with changes in the outcome,
+BMD. BMI varies quite a lot between women, but also varies within a
+woman over time.</li>
 </ol>
 </li>
 </ul>
 </div>
-<div id="longitudinal-data-examples-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#longitudinal-data-examples-1" class="anchor"></a>Longitudinal data examples</h2>
+<div class="section level3">
+<h3 id="longitudinal-data-examples-1">Longitudinal data examples<a class="anchor" aria-label="anchor" href="#longitudinal-data-examples-1"></a>
+</h3>
 <ul>
 <li>birthweight and birth order</li>
-<li>provides birthweights and order of infants from mothers who had 5 children in Georgia
+<li>provides birthweights and order of infants from mothers who had 5
+children in Georgia
 <ul>
 <li>interested in whether birthweight of babies changes with order</li>
-<li>whether this difference depends on the <em>mother’s age at first childbirth</em> or on the <em>weight of initial baby</em>.</li>
+<li>whether this difference depends on the <em>mother’s age at first
+childbirth</em> or on the <em>weight of initial baby</em>.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="georgia-birthweights-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#georgia-birthweights-dataset" class="anchor"></a>Georgia Birthweights dataset</h2>
-<p>Boxplot and “Spaghetti” plot: <img src="session_lecture_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<div class="section level3">
+<h3 id="georgia-birthweights-dataset">Georgia Birthweights dataset<a class="anchor" aria-label="anchor" href="#georgia-birthweights-dataset"></a>
+</h3>
+<p>Boxplot and “Spaghetti” plot:
+<img src="session_lecture_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
-<div id="georgia-birthweights-dataset-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#georgia-birthweights-dataset-1" class="anchor"></a>Georgia Birthweights dataset</h2>
+<div class="section level3">
+<h3 id="georgia-birthweights-dataset-1">Georgia Birthweights dataset<a class="anchor" aria-label="anchor" href="#georgia-birthweights-dataset-1"></a>
+</h3>
 <ul>
 <li>Does baseline birth weight vary by mother?
 <ul>
@@ -456,96 +496,95 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span><span class="op">)</span>
-<span class="va">gafit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>, data<span class="op">=</span><span class="va">ga</span>, 
-              random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span></pre></div>
-<p>Note: there are not enough degrees of freedom to also fit a random coefficient for birth order</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/" class="external-link">nlme</a></span><span class="op">)</span></span>
+<span><span class="va">gafit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">lme</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>, data<span class="op">=</span><span class="va">ga</span>, </span>
+<span>              random<span class="op">=</span><span class="op">~</span><span class="fl">1</span><span class="op">|</span><span class="va">momid</span><span class="op">)</span></span></code></pre></div>
+<p>Note: there are not enough degrees of freedom to also fit a random
+coefficient for birth order</p>
 </div>
-<div id="georgia-birthweights-dataset-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#georgia-birthweights-dataset-2" class="anchor"></a>Georgia Birthweights dataset</h2>
+<div class="section level3">
+<h3 id="georgia-birthweights-dataset-2">Georgia Birthweights dataset<a class="anchor" aria-label="anchor" href="#georgia-birthweights-dataset-2"></a>
+</h3>
 <p><img src="session_lecture_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
-<div id="georgia-birthweights-dataset-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#georgia-birthweights-dataset-3" class="anchor"></a>Georgia Birthweights dataset</h2>
-
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span></pre></div>
-<pre><code>## Linear mixed-effects model fit by REML
-##  Data: ga 
-##        AIC      BIC    logLik
-##   15321.65 15341.28 -7656.826
-## 
-## Random effects:
-##  Formula: ~1 | momid
-##         (Intercept) Residual
-## StdDev:    367.2676 445.0228
-## 
-## Fixed effects: bweight ~ birthord 
-##                Value Std.Error  DF  t-value p-value
-## (Intercept) 2995.640  41.99615 799 71.33130       0
-## birthord      46.608   9.95101 799  4.68374       0
-##  Correlation: 
-##          (Intr)
-## birthord -0.711
-## 
-## Standardized Within-Group Residuals:
-##         Min          Q1         Med          Q3         Max 
-## -5.26801358 -0.43683345  0.05028638  0.52703429  3.30770805 
-## 
-## Number of Observations: 1000
-## Number of Groups: 200</code></pre>
+<div class="section level3">
+<h3 id="georgia-birthweights-dataset-3">Georgia Birthweights dataset<a class="anchor" aria-label="anchor" href="#georgia-birthweights-dataset-3"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">gafit1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Linear mixed-effects model fit by REML</span></span>
+<span><span class="co">##   Data: ga </span></span>
+<span><span class="co">##        AIC      BIC    logLik</span></span>
+<span><span class="co">##   15321.65 15341.28 -7656.826</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Random effects:</span></span>
+<span><span class="co">##  Formula: ~1 | momid</span></span>
+<span><span class="co">##         (Intercept) Residual</span></span>
+<span><span class="co">## StdDev:    367.2676 445.0228</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fixed effects:  bweight ~ birthord </span></span>
+<span><span class="co">##                Value Std.Error  DF  t-value p-value</span></span>
+<span><span class="co">## (Intercept) 2995.640  41.99615 799 71.33130       0</span></span>
+<span><span class="co">## birthord      46.608   9.95101 799  4.68374       0</span></span>
+<span><span class="co">##  Correlation: </span></span>
+<span><span class="co">##          (Intr)</span></span>
+<span><span class="co">## birthord -0.711</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Standardized Within-Group Residuals:</span></span>
+<span><span class="co">##         Min          Q1         Med          Q3         Max </span></span>
+<span><span class="co">## -5.26801358 -0.43683345  0.05028638  0.52703429  3.30770805 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of Observations: 1000</span></span>
+<span><span class="co">## Number of Groups: 200</span></span></code></pre>
 </div>
-<div id="georgia-birthweights-dataset-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#georgia-birthweights-dataset-4" class="anchor"></a>Georgia Birthweights dataset</h2>
-
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html">intervals</a></span><span class="op">(</span><span class="va">gafit1</span>, which <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></pre></div>
-<pre><code>## Approximate 95% confidence intervals
-## 
-##  Fixed effects:
-##                  lower     est.      upper
-## (Intercept) 2913.20418 2995.640 3078.07582
-## birthord      27.07478   46.608   66.14122
-## attr(,"label")
-## [1] "Fixed effects:"
-## 
-##  Random Effects:
-##   Level: momid 
-##                    lower     est.    upper
-## sd((Intercept)) 323.1724 367.2676 417.3794
-## 
-##  Within-group standard error:
-##    lower     est.    upper 
-## 423.7298 445.0228 467.3859</code></pre>
-
+<div class="section level3">
+<h3 id="georgia-birthweights-dataset-4">Georgia Birthweights dataset<a class="anchor" aria-label="anchor" href="#georgia-birthweights-dataset-4"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html" class="external-link">intervals</a></span><span class="op">(</span><span class="va">gafit1</span>, which <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Approximate 95% confidence intervals</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Fixed effects:</span></span>
+<span><span class="co">##                  lower     est.      upper</span></span>
+<span><span class="co">## (Intercept) 2913.20418 2995.640 3078.07582</span></span>
+<span><span class="co">## birthord      27.07478   46.608   66.14122</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Random Effects:</span></span>
+<span><span class="co">##   Level: momid </span></span>
+<span><span class="co">##                    lower     est.    upper</span></span>
+<span><span class="co">## sd((Intercept)) 323.1724 367.2676 417.3794</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##  Within-group standard error:</span></span>
+<span><span class="co">##    lower     est.    upper </span></span>
+<span><span class="co">## 423.7298 445.0228 467.3859</span></span></code></pre>
 <ul>
 <li>Does baseline birth weight vary by mother?
 <ul>
 <li>yes: the subject variance is significantly greater than zero</li>
-<li>The variance between mothers is too much to be explained by within-mother variation in birth weights</li>
+<li>The variance between mothers is too much to be explained by
+within-mother variation in birth weights</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="population-average-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#population-average-models" class="anchor"></a>Population Average Models</h1>
-<div id="population-average-models-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#population-average-models-1" class="anchor"></a>Population Average Models</h2>
+<div class="section level2">
+<h2 id="population-average-models">Population Average Models<a class="anchor" aria-label="anchor" href="#population-average-models"></a>
+</h2>
+<div class="section level3">
+<h3 id="population-average-models-1">Population Average Models<a class="anchor" aria-label="anchor" href="#population-average-models-1"></a>
+</h3>
 <ul>
-<li>An alternative to random / mixed-effects models that is more robust to assumptions of:
+<li>An alternative to random / mixed-effects models that is more robust
+to assumptions of:
 <ul>
 <li>distribution of random effects</li>
 <li>correlation structure</li>
 </ul>
 </li>
-<li>Estimates correlation structure from the data rather than assuming normality
+<li>Estimates correlation structure from the data rather than assuming
+normality
 <ul>
 <li>Requires more clusters than observations per cluster</li>
 </ul>
@@ -557,72 +596,77 @@ FECFAT_{ij} = \beta_0 + SUBJECT_i + \beta_{pilltype j} PILLTYPE_j + \epsilon_{ij
 </li>
 </ul>
 </div>
-<div id="population-average-models-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#population-average-models-2" class="anchor"></a>Population Average Models</h2>
+<div class="section level3">
+<h3 id="population-average-models-2">Population Average Models<a class="anchor" aria-label="anchor" href="#population-average-models-2"></a>
+</h3>
 <ul>
 <li><p>Compare mixed model multiple linear regression: <span class="math display">\[
-E[Y_{ij}|X_{ij}] = \beta_0 + \alpha_{0j} + \beta_1 X_{ij}, \alpha_{0j} \sim N(0, \sigma)
-\]</span> for subject <span class="math inline">\(i\)</span> in group <span class="math inline">\(j\)</span>.</p></li>
+E[Y_{ij}|X_{ij}] = \beta_0 + \alpha_{0j} + \beta_1 X_{ij}, \alpha_{0j}
+\sim N(0, \sigma)
+\]</span> for subject <span class="math inline">\(i\)</span> in group
+<span class="math inline">\(j\)</span>.</p></li>
 <li><p>to a population average model: <span class="math display">\[
 E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 \]</span></p></li>
-<li><p>Interpretations of <span class="math inline">\(\beta^*\)</span> and <span class="math inline">\(\beta\)</span> are equivalent</p></li>
-<li><p>Numerically equivalent for linear and log-linear models (if specification of mixed model is correct), but not for logistic link.</p></li>
+<li><p>Interpretations of <span class="math inline">\(\beta^*\)</span>
+and <span class="math inline">\(\beta\)</span> are equivalent</p></li>
+<li><p>Numerically equivalent for linear and log-linear models (if
+specification of mixed model is correct), but not for logistic
+link.</p></li>
 </ul>
 </div>
-<div id="fit-a-population-average-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-population-average-model" class="anchor"></a>Fit a population average model</h2>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">gafit.gee</span> <span class="op">&lt;-</span> <span class="fu">gee</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gee/man/gee.html">gee</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>,
-                      corstr <span class="op">=</span> <span class="st">"exchangeable"</span>,
-                      id <span class="op">=</span> <span class="va">momid</span>,
-                      data <span class="op">=</span> <span class="va">ga</span><span class="op">)</span></pre></div>
+<div class="section level3">
+<h3 id="fit-a-population-average-model">Fit a population average model<a class="anchor" aria-label="anchor" href="#fit-a-population-average-model"></a>
+</h3>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gafit.gee</span> <span class="op">&lt;-</span> <span class="fu">gee</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gee/man/gee.html" class="external-link">gee</a></span><span class="op">(</span><span class="va">bweight</span> <span class="op">~</span> <span class="va">birthord</span>,</span>
+<span>                      corstr <span class="op">=</span> <span class="st">"exchangeable"</span>,</span>
+<span>                      id <span class="op">=</span> <span class="va">momid</span>,</span>
+<span>                      data <span class="op">=</span> <span class="va">ga</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
-
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gafit.gee</span><span class="op">)</span></pre></div>
-<pre><code>## 
-##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
-##  gee S-function, version 4.13 modified 98/01/27 (1998) 
-## 
-## Model:
-##  Link:                      Identity 
-##  Variance to Mean Relation: Gaussian 
-##  Correlation Structure:     Exchangeable 
-## 
-## Call:
-## gee::gee(formula = bweight ~ birthord, id = momid, data = ga, 
-##     corstr = "exchangeable")
-## 
-## Summary of Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -2795.464  -299.126    48.840   341.144  1824.536 
-## 
-## 
-## Coefficients:
-##             Estimate Naive S.E.   Naive z Robust S.E.  Robust z
-## (Intercept) 2995.640  41.973695 71.369462   38.808066 77.191170
-## birthord      46.608   9.958128  4.680398    9.996256  4.662546
-## 
-## Estimated Scale Parameter:  332525.3
-## Number of Iterations:  1
-## 
-## Working Correlation
-##           [,1]      [,2]      [,3]      [,4]      [,5]
-## [1,] 1.0000000 0.4035684 0.4035684 0.4035684 0.4035684
-## [2,] 0.4035684 1.0000000 0.4035684 0.4035684 0.4035684
-## [3,] 0.4035684 0.4035684 1.0000000 0.4035684 0.4035684
-## [4,] 0.4035684 0.4035684 0.4035684 1.0000000 0.4035684
-## [5,] 0.4035684 0.4035684 0.4035684 0.4035684 1.0000000</code></pre>
+<div class="section level3">
+<h3 id="section"></h3>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">gafit.gee</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA</span></span>
+<span><span class="co">##  gee S-function, version 4.13 modified 98/01/27 (1998) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model:</span></span>
+<span><span class="co">##  Link:                      Identity </span></span>
+<span><span class="co">##  Variance to Mean Relation: Gaussian </span></span>
+<span><span class="co">##  Correlation Structure:     Exchangeable </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## gee::gee(formula = bweight ~ birthord, id = momid, data = ga, </span></span>
+<span><span class="co">##     corstr = "exchangeable")</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Summary of Residuals:</span></span>
+<span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
+<span><span class="co">## -2795.464  -299.126    48.840   341.144  1824.536 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">##             Estimate Naive S.E.   Naive z Robust S.E.  Robust z</span></span>
+<span><span class="co">## (Intercept) 2995.640  41.973695 71.369462   38.808066 77.191170</span></span>
+<span><span class="co">## birthord      46.608   9.958128  4.680398    9.996256  4.662546</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Estimated Scale Parameter:  332525.3</span></span>
+<span><span class="co">## Number of Iterations:  1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Working Correlation</span></span>
+<span><span class="co">##           [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
+<span><span class="co">## [1,] 1.0000000 0.4035684 0.4035684 0.4035684 0.4035684</span></span>
+<span><span class="co">## [2,] 0.4035684 1.0000000 0.4035684 0.4035684 0.4035684</span></span>
+<span><span class="co">## [3,] 0.4035684 0.4035684 1.0000000 0.4035684 0.4035684</span></span>
+<span><span class="co">## [4,] 0.4035684 0.4035684 0.4035684 1.0000000 0.4035684</span></span>
+<span><span class="co">## [5,] 0.4035684 0.4035684 0.4035684 0.4035684 1.0000000</span></span></code></pre>
 </div>
-<div id="correlation-assumptions-for-gee" class="section level2">
-<h2 class="hasAnchor">
-<a href="#correlation-assumptions-for-gee" class="anchor"></a>Correlation assumptions for GEE</h2>
-<p>Must make some assumption about the form of correlation among grouped observations. Some options are:</p>
+<div class="section level3">
+<h3 id="correlation-assumptions-for-gee">Correlation assumptions for GEE<a class="anchor" aria-label="anchor" href="#correlation-assumptions-for-gee"></a>
+</h3>
+<p>Must make some assumption about the form of correlation among grouped
+observations. Some options are:</p>
 <ul>
 <li>Independence:
 <ul>
@@ -633,77 +677,98 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 <ul>
 <li>all pairwise correlations are the same (in large-N limit)</li>
 <li>nothing distinguishes one member of a cluster from another</li>
-<li>appropriate in the absence of other data structures such as measurements taken through time or space</li>
+<li>appropriate in the absence of other data structures such as
+measurements taken through time or space</li>
 </ul>
 </li>
 <li>Auto-regressive (<em>AR-M</em>):
 <ul>
-<li>observations taken more closely in time are more highly correlated</li>
+<li>observations taken more closely in time are more highly
+correlated</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="correlation-assumptions-for-gee-contd" class="section level2">
-<h2 class="hasAnchor">
-<a href="#correlation-assumptions-for-gee-contd" class="anchor"></a>Correlation assumptions for GEE (cont’d)</h2>
+<div class="section level3">
+<h3 id="correlation-assumptions-for-gee-contd">Correlation assumptions for GEE (cont’d)<a class="anchor" aria-label="anchor" href="#correlation-assumptions-for-gee-contd"></a>
+</h3>
 <ul>
 <li>Unstructured:
 <ul>
-<li>estimates a separate correlation between observations taken on each pair of “times”</li>
+<li>estimates a separate correlation between observations taken on each
+pair of “times”</li>
 </ul>
 </li>
 <li>Non-stationary (“non_stat_M_dep”):
 <ul>
-<li>similar to unstructured, but assumes all correlations for pairs separated far enough in time are zero</li>
+<li>similar to unstructured, but assumes all correlations for pairs
+separated far enough in time are zero</li>
 </ul>
 </li>
 <li>Stationary (“stat_M_dep”):
 <ul>
-<li>e.g. stationary of order 2: observations taken at time points 1 and 3 have the same correlation as time points 2 and 4</li>
-<li>but this might be different from the correlation between observations taken at times 2 and 3</li>
-<li>correlations for observations 3 or more time periods apart assumed to be zero</li>
+<li>e.g. stationary of order 2: observations taken at time points 1 and
+3 have the same correlation as time points 2 and 4</li>
+<li>but this might be different from the correlation between
+observations taken at times 2 and 3</li>
+<li>correlations for observations 3 or more time periods apart assumed
+to be zero</li>
 </ul>
 </li>
 </ul>
-<p><em>Fewer assumptions requires more data, and good assumptions improve results</em></p>
+<p><em>Fewer assumptions requires more data, and good assumptions
+improve results</em></p>
 </div>
-<div id="help-in-choosing-a-method" class="section level2">
-<h2 class="hasAnchor">
-<a href="#help-in-choosing-a-method" class="anchor"></a>Help in choosing a method</h2>
-<div class="figure">
-<img src="journal.pone.0146721.t002.PNG" alt=""><p class="caption">Hierarchical modeling decision table from Moen <em>et al.</em></p>
+<div class="section level3">
+<h3 id="help-in-choosing-a-method">Help in choosing a method<a class="anchor" aria-label="anchor" href="#help-in-choosing-a-method"></a>
+</h3>
+<div class="float">
+<img src="journal.pone.0146721.t002.PNG" alt="Hierarchical modeling decision table from Moen et al."><div class="figcaption">Hierarchical modeling decision table from Moen
+<em>et al.</em>
 </div>
 </div>
-<div id="conclusions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#conclusions" class="anchor"></a>Conclusions</h2>
+</div>
+<div class="section level3">
+<h3 id="conclusions">Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
+</h3>
 <ul>
-<li>Ignoring within-subject correlations can produce very wrong results, and is not always “conservative”</li>
+<li>Ignoring within-subject correlations can produce very wrong results,
+and is not always “conservative”</li>
 <li>Hierarchical analysis strategies are needed for any of:
 <ol style="list-style-type: decimal">
-<li>When the correlation structure is of primary interest, <em>e.g.</em> familial aggregation of disease, or consistency of treatment within centers,</li>
-<li>When we wish to “borrow strength” across the levels of a hierarchy in order to improve estimates, and</li>
-<li>When dealing with unbalanced correlated data. E.g., no requirement that each Georgia mother have exactly 5 children.</li>
+<li>When the correlation structure is of primary interest, <em>e.g.</em>
+familial aggregation of disease, or consistency of treatment within
+centers,</li>
+<li>When we wish to “borrow strength” across the levels of a hierarchy
+in order to improve estimates, and</li>
+<li>When dealing with unbalanced correlated data. E.g., no requirement
+that each Georgia mother have exactly 5 children.</li>
 </ol>
 </li>
-<li>Population average models provide a robust alternative to mixed models
+<li>Population average models provide a robust alternative to mixed
+models
 <ul>
 <li>for one level of hierarchy</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="a-final-note-on-reporting-results-of-hypothesis-tests" class="section level2">
-<h2 class="hasAnchor">
-<a href="#a-final-note-on-reporting-results-of-hypothesis-tests" class="anchor"></a>A final note on reporting results of hypothesis tests</h2>
+<div class="section level3">
+<h3 id="a-final-note-on-reporting-results-of-hypothesis-tests">A final note on reporting results of hypothesis tests<a class="anchor" aria-label="anchor" href="#a-final-note-on-reporting-results-of-hypothesis-tests"></a>
+</h3>
 <ul>
-<li>Include test statistic, a measure of “effect size”, and test name if unclear from test statistic</li>
-<li>Write in plain language and let the statistics support, not lead. E.g.:
+<li>Include test statistic, a measure of “effect size”, and test name if
+unclear from test statistic</li>
+<li>Write in plain language and let the statistics support, not lead.
+E.g.:
 <ul>
 <li>
-<em>do</em>: The 36 study participants had a mean age of 27.4 (SD = 12.6), significantly older than the university mean of 21.2 years (t(35) = 2.95, p = 0.01).</li>
+<em>do</em>: The 36 study participants had a mean age of 27.4 (SD =
+12.6), significantly older than the university mean of 21.2 years (t(35)
+= 2.95, p = 0.01).</li>
 <li>
-<em>don’t</em>: A p-value of 0.01 indicated significant difference in age of study participants compared to all university students.</li>
+<em>don’t</em>: A p-value of 0.01 indicated significant difference
+in age of study participants compared to all university students.</li>
 <li>
 <em>do</em>: report confidence intervals where possible</li>
 </ul>
@@ -711,16 +776,21 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 </ul>
 <ul>
 <li>
-<a href="https://psych.uw.edu/storage/writing_center/stats.pdf">UW “Reporting Results of Common Statistical Tests in APA Format”</a>: specific examples of reporting a hypothesis test result</li>
-<li>STROBE guidelines for reporting observational studies: <a href="https://www.strobe-statement.org/" class="uri">https://www.strobe-statement.org/</a>
+<a href="https://psych.uw.edu/storage/writing_center/stats.pdf" class="external-link">UW
+“Reporting Results of Common Statistical Tests in APA Format”</a>:
+specific examples of reporting a hypothesis test result</li>
+<li>STROBE guidelines for reporting observational studies: <a href="https://www.strobe-statement.org/" class="external-link uri">https://www.strobe-statement.org/</a>
 </li>
 <li>
-<a href="https://academic.oup.com/DocumentLibrary/JJCO/eng.guideline.pdf">A Guideline for Reporting Results of Statistical Analysis in Japanese Journal of Clinical Oncology</a>: helpful guidelines for all parts of a manuscript</li>
+<a href="https://academic.oup.com/DocumentLibrary/JJCO/eng.guideline.pdf" class="external-link">A
+Guideline for Reporting Results of Statistical Analysis in Japanese
+Journal of Clinical Oncology</a>: helpful guidelines for all parts of a
+manuscript</li>
 </ul>
 </div>
-<div id="congratulations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#congratulations" class="anchor"></a>CONGRATULATIONS!!!</h2>
+<div class="section level3">
+<h3 id="congratulations">CONGRATULATIONS!!!<a class="anchor" aria-label="anchor" href="#congratulations"></a>
+</h3>
 </div>
 </div>
   </div>
@@ -736,11 +806,13 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://waldronlab.io">Levi Waldron</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://waldronlab.io" class="external-link">Levi Waldron</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -748,6 +820,8 @@ E[Y_{ij}|X_{ij}] = \beta_0^* + \beta_1^* X_{ij}
 
   
 
+
+  
 
   </body>
 </html>

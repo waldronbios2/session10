@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,14 +39,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">session10</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lecture and Lab
      
     <span class="caret"></span>
@@ -57,23 +59,23 @@
       <a href="articles/session_lecture.pdf">Lecture notes PDF</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="articles/session_lab.html">Lab materials</a>
     </li>
   </ul>
 </li>
-<li class="dropdown-header">
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/waldronbios2/session10/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/waldronbios2/session10/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/leviwaldron1">
-    <span class="fab fa fab fa-twitter fa-lg"></span>
+  <a href="https://twitter.com/leviwaldron1" class="external-link">
+    <span class="fab fa-twitter fa-lg"></span>
      
   </a>
 </li>
@@ -91,13 +93,13 @@
   <div class="contents col-md-9">
 
 
-<div id="session-10-repeated-measures-and-longitudinal-analysis-ii" class="section level1">
+<div class="section level1">
 
-<div id="lecture" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lecture" class="anchor"></a>Lecture</h2>
+<div class="section level2">
+<h2 id="lecture">Lecture<a class="anchor" aria-label="anchor" href="#lecture"></a>
+</h2>
 <p><strong>Learning Objectives</strong></p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Define mixed effects models and population average models</li>
 <li>Perform model diagnostics for random effects models</li>
 <li>Interpret random intercepts and random slopes</li>
@@ -106,7 +108,7 @@
 <li>Choose between hierarchical modeling strategies</li>
 </ol>
 <p><strong>Outline</strong></p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Review of fecal fat dataset</li>
 <li>Summary of non-hierarchical approaches</li>
 <li>Mixed effects models</li>
@@ -117,22 +119,22 @@
 <li>Vittinghoff sections 7.2, 7.3, 7.5</li>
 </ul>
 </div>
-<div id="lab" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lab" class="anchor"></a>Lab</h2>
+<div class="section level2">
+<h2 id="lab">Lab<a class="anchor" aria-label="anchor" href="#lab"></a>
+</h2>
 <p><strong>Learning objectives</strong></p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Gain an intuitive understanding of ICC through simulated data</li>
 <li>Simulate correlated grouped data</li>
 <li>Use a heatmap and spaghetti plot to visualize correlated grouped data</li>
-<li>Create a custom color-blind friendly palette for any plot using <a href="https://colorbrewer2.org/" class="uri">https://colorbrewer2.org/</a> and the RColorBrewer library</li>
+<li>Create a custom color-blind friendly palette for any plot using <a href="https://colorbrewer2.org/" class="external-link uri">https://colorbrewer2.org/</a> and the RColorBrewer library</li>
 <li>Fit random and mixed-effects models to correlated grouped data</li>
 <li>Make QQ plots for mixed-effects models</li>
 <li>Calculate ICC from a random or mixed-effects model</li>
 <li>Fit a population average model, aka marginal model, using GEE</li>
 </ol>
 <p><strong>Exercises</strong></p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Simulation of correlated grouped data</li>
 <li>Create a heatmap of simulated data to visualize the group effect</li>
 <li>Create a spaghetti plot of the simulated data to visualize the group effect</li>
@@ -153,47 +155,57 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/waldronbios2/session10/">https://​github.com/​waldronbios2/​session10/​</a>
-</li>
-<li>Full course notes at <br><a href="https://waldronbios2.github.io/cunybios2/">https://​waldronbios2.github.io/​cunybios2/​</a>
-</li>
-<li>git clone at <br><a href="https://github.com/waldronbios2/session10.git">https://​github.com/​waldronbios2/​session10.git</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://waldronlab.io">Levi Waldron</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2725-0694" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://github.com/waldronbios2/session10/" class="external-link">Browse source code</a></li>
+<li><a href="https://waldronbios2.github.io/cunybios2/" class="external-link">Full course notes</a></li>
+<li><a href="https://github.com/waldronbios2/session10.git" class="external-link">git clone</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/waldronbios2/templatesession/actions"><img src="https://github.com/waldronbios2/session9/workflows/build/badge.svg" alt="Actions Status"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://creativecommons.org/licenses/by/4.0" class="external-link">CC BY 4.0</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing session10</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>
+<a href="https://waldronlab.io" class="external-link">Levi Waldron</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2725-0694" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/waldronbios2/templatesession/actions" class="external-link"><img src="https://github.com/waldronbios2/session9/workflows/build/badge.svg" alt="Actions Status"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://waldronlab.io">Levi Waldron</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://waldronlab.io" class="external-link">Levi Waldron</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -201,6 +213,8 @@
 
   
 
+
+  
 
   </body>
 </html>
