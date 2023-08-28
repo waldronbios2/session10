@@ -2,8 +2,8 @@ name: build
 on: push
 jobs:
   build:
-    runs-on: ubuntu-18.04
-    container: rocker/verse:4.0.2
+    runs-on: ubuntu-22.04
+    container: rocker/verse:latest
     steps:
       - name: trigger action on main site
         run: |
@@ -32,7 +32,7 @@ jobs:
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
            PATH=$PATH:$HOME/bin/ Rscript -e 'rmarkdown::render(input="vignettes/session_lecture.Rmd", output_format = "beamer_presentation", output_file = "../docs/articles/session_lecture.pdf")'
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
